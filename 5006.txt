@@ -1,1 +1,38 @@
+
 Student Code	Last Name	First Name	Activity Group	Activity Code	Course
+22502311	Amarathunga	Himantha	LC01	01	SMIT
+22924696	Are	Vidhyasagar	LC01	01	SMDS
+22919560	Diya	Nahdiya Hossain	LC01	01	SMIT
+22634811	Gunturu	Lydia	LC01	01	TM010
+22908622	Hasan	Abir	LC01	01	SMIT
+22633579	Ishran	Dinesh	LC01	01	TM010
+22367451	JAHIN	Afrida	LC01	01	SMIT
+22601208	Jayswal	Rushant	LC01	01	SMIT
+22734033	Keesari	Harini	LC01	01	SMIT
+21396516	Khandaker	Md Tariqul Alam	LC01	01	SMINCT
+23014708	Kilic	Mert Onur	LC01	01	TM010
+22962969	Kulkarni	Deekshitha	LC01	01	SMDS
+22697148	Lanka Geeganage	PRIMAN GRESLI	LC01	01	SMIT
+22967599	Lisun-Ul-Islam	Md	LC01	01	SMIT
+22611365	Majumder	Mehedi Hassan	LC01	01	SMIT
+22721266	Malek	Kaif Samir	LC01	01	SMIT
+21803430	Mostafijur Rahman	Mohammad	LC01	01	SMDS
+22720893	Muthuhawadige	Bhagya	LC01	01	SMIT
+22405335	Muthukumarana Palavinnage	Oshini Wathsala	LC01	01	SMDS
+22908591	Nampelly	Shivani	LC01	01	SMDS
+22618829	Neerudu	Charan	LC01	01	SMIT
+22874550	Nishi	Jannatul Ferdous	LC01	01	SMIT
+22367770	Patel	Viharkumar	LC01	01	SMIT
+22197003	Paudel	Anjan	LC01	01	SMIT
+22888003	Saddi	Poojitha	LC01	01	SMDS
+22890112	Salagram	Sadhwik	LC01	01	SMDS
+22892418	Saravana	Arun Raj	LC01	01	TM010
+22354796	Sharma	Sunil	LC01	01	SMIT
+22703239	Sharma	Yashank	LC01	01	SMDS
+22607857	Shi	Qinlong	LC01	01	SMIT
+22640875	Shrestha	Abhaya	LC01	01	SMDS
+22610325	Tamrakar	Pratik	LC01	01	SMDS
+22866875	Thotakura	Sai Krishna Tulasi Annapurna	LC01	01	SMDS
+22888836	Vankayalapati	Naveen	LC01	01	SMDS
+22974406	Veeramalla	Lokesh	LC01	01	SMDS
+22485377	Yin	Zhuyun	LC01	01	TM010
