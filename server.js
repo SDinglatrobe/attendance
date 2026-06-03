@@ -426,9 +426,10 @@ app.post("/checkin", (req, res) => {
       title: "Already Submitted",
       body: `
         <h1>Already Submitted</h1>
-        <div class="status bad">You have already submitted attendance for ${escapeHtml(session.sessionId)}.</div>
+        <div class="status warn">You have already submitted attendance for ${escapeHtml(session.sessionId)}.</div>
         <p><strong>Student ID:</strong> ${escapeHtml(student.studentCode)}</p>
         <p><strong>Name:</strong> ${escapeHtml(student.fullName)}</p>
+        <a href="/"><button type="button">Back to Main Page</button></a>
       `
     }));
   }
@@ -460,12 +461,15 @@ app.post("/checkin", (req, res) => {
   res.send(pageTemplate({
     title: "Check-in Successful",
     body: `
-      <h1>签到成功！</h1>
-      <div class="status ok">Your attendance has been recorded.</div>
+      <h1>Check-in Successful</h1>
+      <div class="status ok">Your attendance has been recorded successfully.</div>
       <p><strong>Student ID:</strong> ${escapeHtml(student.studentCode)}</p>
       <p><strong>Name:</strong> ${escapeHtml(student.fullName)}</p>
       <p><strong>Week:</strong> ${escapeHtml(session.sessionId)}</p>
       <p class="small">Submitted at: ${escapeHtml(melNow.display)}</p>
+      <button type="button" onclick="window.close(); setTimeout(function(){ window.location.href='/'; }, 250);">Close Page</button>
+      <a href="/"><button type="button" class="secondary">Back to Main Page</button></a>
+      <p class="small center">If the page does not close automatically, please close this browser tab manually.</p>
     `
   }));
 });
