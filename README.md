@@ -1,92 +1,100 @@
 # LTU Attendance System
 
-A simple Node.js attendance check-in system for CSE3CWA / CSE5006.
+Simple Node.js / Express attendance system for CSE3CWA / CSE5006.
 
-## Features
+## Deploy on Render
 
-- Reads student rosters from `5006.txt` and `3CWA.txt`
-- Week 1 starts on Tuesday 2026-07-14
-- Attendance is open only on Tuesday 05:00-17:00 Melbourne time
-- QR code changes by week using the `week` URL variable
-- Students only enter their student ID and submit
-- Student ID must exist in the roster files
-- One submission per student per week
-- Attendance records are stored in `data/attendance.json`
-- Mobile-friendly page
-
-## Files
+Build Command:
 
 ```text
-package.json
-server.js
-url.txt
+npm install
+```
+
+Start Command:
+
+```text
+npm start
+```
+
+## Important files
+
+```text
 5006.txt
 3CWA.txt
+url.txt
 data/attendance.json
+data/settings.json
 ```
 
-## Setup on Render
-
-Use these settings:
+`url.txt` should contain the public Render URL, for example:
 
 ```text
-Build Command: npm install
-Start Command: npm start
+https://attendance-80su.onrender.com
 ```
 
-After deployment, edit `url.txt` and replace the placeholder with your Render app URL, for example:
+## Student page
 
 ```text
-https://attendance-demo.onrender.com
+https://attendance-80su.onrender.com/
 ```
 
-Commit and push the change to GitHub.
-
-## URLs
-
-Student check-in page:
+Students see a mobile-friendly page with only:
 
 ```text
-/
+Student ID input
+Submit button
 ```
 
-Weekly QR code page:
+If the student ID does not exist in `5006.txt` or `3CWA.txt`, the system rejects the submission.
+
+Each student can submit once per week/session.
+
+## QR page
 
 ```text
-/qr
+https://attendance-80su.onrender.com/qr
 ```
 
-Admin page:
+The QR code points to the current week check-in URL. The URL text is not printed on the QR page.
+
+## Admin mode
+
+Open:
 
 ```text
-/admin
+https://attendance-80su.onrender.com/admin
 ```
 
-Download JSON:
+Password:
 
 ```text
-/attendance.json
+171717
 ```
 
-## Optional Admin Key
+Admin mode allows you to:
 
-In Render environment variables, you can set:
+- show the current QR code
+- download `attendance.json`
+- turn formal running mode ON/OFF
+- clear attendance JSON records and restore original empty data
+- view recent attendance records
 
-```text
-ADMIN_KEY=your-secret-key
-```
+## Formal running mode
 
-Then use:
+When formal running mode is ON:
 
-```text
-/admin?key=your-secret-key
-/attendance.json?key=your-secret-key
-```
+- Attendance only works on Tuesday
+- Open time: 05:00 Melbourne time
+- Close time: 17:00 Melbourne time
+- Time zone: Australia/Melbourne
+- Daylight saving is handled automatically by Node.js `Intl`
 
-## Important Note About JSON Storage
+When formal running mode is OFF:
 
-This version stores attendance records in a local JSON file on the running server.
-On free hosting platforms, local files may be lost after redeploys, restarts, or instance replacement.
-Download `attendance.json` after each class as a backup.
+- Test mode is enabled
+- You can test submissions anytime
+- Time restriction is ignored
 
-For long-term production use, use a database or persistent disk.
+## Data warning
+
+This version stores attendance in local JSON files. On Render free services, local files may be lost after redeploy/restart/instance replacement. Download `attendance.json` after each class as backup.
