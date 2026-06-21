@@ -1,5 +1,9 @@
 # LTU Attendance System
 
+Copyright (C) 2026 Dr Shuo Ding <shuoding@outlook.com>
+
+This project is licensed under the GNU Affero General Public License version 3. Any copy, redistribution or modified distribution must preserve the original author and copyright information. See [LICENSE](LICENSE).
+
 A simple Node.js attendance check-in system for CSE3CWA / CSE5006.
 
 ## Features

@@ -1,3 +1,14 @@
+/*
+ * LTU Attendance System
+ * Copyright (C) 2026 Dr Shuo Ding <shuoding@outlook.com>
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License version 3.
+ * Any copy or distribution must preserve this original author and copyright notice.
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 const express = require("express");
 const fs = require("fs");
 const path = require("path");

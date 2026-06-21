@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Simple weekly attendance check-in system for CSE3CWA/CSE5006",
   "main": "server.js",
+  "license": "AGPL-3.0-only",
   "scripts": {
     "start": "node server.js"
   },
