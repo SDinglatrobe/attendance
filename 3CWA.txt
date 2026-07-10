@@ -44,3 +44,4 @@ Student Code	Last Name	First Name	Activity Group	Activity Code	Course
 99300043	Scott	Lachlan	LC01	02	SBCS
 99300044	Green	Matilda	LC01	02	SBCS
 99300045	Baker	Samuel	LC01	02	SBIT
+12345678	Test	Student	LC01	02	SBIT
