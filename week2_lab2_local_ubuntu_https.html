@@ -8,482 +8,600 @@
 <h4 class="resources-signpost" style="margin-bottom: 1rem;"><img
     class="img-fluid" style="vertical-align: middle; margin-right: 0.5rem;"
     src="/theme/latrobe/assets/2023/SVG/resources.svg" alt="" width="50"
-    height="50">Lab 2: Host Both Sites on Your Own Ubuntu (Nginx, Apache, HTTPS)</h4>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-users" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Who does this lab?</strong></p>
-      <p>This lab is for <strong>both CSE3CWA and CSE5006</strong> students. Everyone completes Lab 1 and Lab 2. Lab 3 is an extra CSE5006-only exercise.</p>
-    </div>
-  </div>
+    height="50">Lab 2: Host Websites on Ubuntu with Nginx, Apache and HTTPS</h4>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Who does this lab?</strong></p>
+  <p>This lab is for <strong>both CSE3CWA and CSE5006</strong> students.
+    Everyone completes Lab 1 and Lab 2. Lab 3 is an extra CSE5006-only exercise.
+  </p>
 </div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-desktop" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Before you start: your environment</strong></p>
-      <p>All labs assume an <strong>Ubuntu</strong> machine running in <strong>VMware</strong>. Open a terminal inside that Ubuntu virtual machine and run every command there.</p><p>Every command in this lab runs in the terminal of your Ubuntu virtual machine. You do not need any cloud account; everything is local.</p>
-    </div>
-  </div>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Before you start: your environment</strong></p>
+  <p>Complete every step inside your <strong>Ubuntu virtual machine in
+      VMware</strong>. Open Terminal in Ubuntu. Do not run these commands in
+    Windows PowerShell or the Windows Command Prompt.</p>
+  <p>This is a local-server lab. You do not need Render, AWS, Azure, a public
+    domain name, or a public IP address.</p>
 </div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-pencil" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Editing files on Ubuntu</strong></p>
-      <p>You will edit text files on the command line. If you are new to terminal editors, read the official guides first: <a href="https://www.nano-editor.org/dist/latest/nano.html" target="_blank" rel="noopener">GNU nano manual</a> (beginner-friendly) and the <a href="https://www.vim.org/docs.php" target="_blank" rel="noopener">Vim documentation</a> (run <code>vimtutor</code> in a terminal for a hands-on tutorial). Use whichever you prefer; examples below use <code>nano</code>.</p>
-    </div>
-  </div>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>How to edit a configuration file with nano</strong></p>
+  <p>This lab uses <code>nano</code>, a beginner-friendly terminal editor. Open
+    a file with <code>sudo nano FILE-PATH</code>. Paste the supplied
+    configuration. Press <strong>Ctrl+O</strong>, then <strong>Enter</strong> to
+    save. Press <strong>Ctrl+X</strong> to close nano.</p>
 </div>
-<p>In Lab 1, Render hid every detail. Here you do it yourself on your
-  <strong>Ubuntu</strong> machine. You will serve the same two sites &mdash; the
-  static page and the Node.js attendance app &mdash; install and configure
-  <strong>Nginx</strong> and <strong>Apache</strong>, learn what their
-  configuration lines mean, and finally turn on <strong>HTTPS</strong> using a TLS
-  certificate you generate from scratch. Everything here by hand is what Render did
-  automatically for you.</p>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-lightbulb-o" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>What you will achieve</strong></p>
-      <p>A static site served by Nginx on your own machine.</p><p>The Node.js attendance app running under PM2 and reached through Nginx as a <strong>reverse proxy</strong>.</p><p>A working <strong>HTTPS</strong> address using a self-signed certificate you created.</p><p>An understanding of ports, web roots, and what each line of an Nginx/Apache config means.</p>
-    </div>
-  </div>
+<p>This lab has two separate practical sections. In <strong>Section A</strong>,
+  you install Nginx and publish a local static HTML website over HTTPS. In
+  <strong>Section B</strong>, you stop Nginx, install Apache, run the Node.js
+  Attendance application, and use Apache as an HTTPS reverse proxy.</p>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>What you will achieve</strong></p>
+  <p>A local static HTML website served by Nginx.</p>
+  <p>A self-signed TLS certificate and a working <code>https://localhost</code>
+    Nginx site.</p>
+  <p>The Attendance Node.js application running locally on port
+    <code>3000</code>.</p>
+  <p>Apache serving the Attendance application on standard HTTPS port
+    <code>443</code>.</p>
+  <p>An understanding of web roots, configuration files, ports, TLS
+    certificates, reverse proxies and PM2.</p>
 </div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-download" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Where to get the attendance project</strong></p>
-      <p>Download or clone it from <a href="https://github.com/SDinglatrobe/attendance" target="_blank" rel="noopener">the attendance repository on GitHub</a>. You can either run <code>git clone</code> on its address, or use the green <strong>Code &rarr; Download ZIP</strong> button and unzip it.</p>
-    </div>
-  </div>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Important: Nginx and Apache cannot use the same ports at the same
+      time</strong></p>
+  <p>Both web servers normally listen on ports <code>80</code> and
+    <code>443</code>. Only one application can own a port at a time. Section A
+    uses Nginx. Section B stops Nginx before starting Apache.</p>
 </div>
-<h4>Part 1: Prepare Ubuntu</h4>
-<p>Update the package lists and install the basics. <code>sudo</code> means &ldquo;run as administrator&rdquo;, which installing software needs.</p>
+<h4>Part 1: Prepare Ubuntu and understand the four ports</h4>
+<p>Update Ubuntu's package information and install the basic tools used
+  throughout the lab:</p>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo apt update
-sudo apt install git curl -y
-git --version</pre>
-<h4>Part 2: Two ideas to hold onto &mdash; ports and routing</h4>
-<p>A <strong>port</strong> is a numbered doorway into a computer. Many
-  programs run at once because each claims a different number. The web has agreed
-  defaults so browsers know where to knock:</p>
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Refresh Ubuntu's list of available software packages</span>
+sudo apt update
+
+<span class="cm" style="color: #7fb069;"># Install Git, curl, OpenSSL and nano</span>
+sudo apt install git curl openssl nano -y
+
+<span class="cm" style="color: #7fb069;"># Confirm that the tools are available</span>
+git --version
+openssl version</pre>
+<p>A <strong>port</strong> is a numbered network entrance used by an
+  application:</p>
 <ul>
-  <li><strong>Port 80</strong> &mdash; plain HTTP. <code>http://...</code> uses it.</li>
-  <li><strong>Port 443</strong> &mdash; HTTPS (encrypted). <code>https://...</code> uses it.</li>
-  <li><strong>Port 3000</strong> &mdash; what the attendance app uses by default while running.</li>
+  <li><code>80</code> — standard unencrypted HTTP.</li>
+  <li><code>443</code> — standard encrypted HTTPS.</li>
+  <li><code>3000</code> — the private local port used by the Attendance Node.js
+    application.</li>
+  <li><code>22</code> — normally used for SSH; it is not required in this local
+    lab.</li>
 </ul>
-<p><strong>Routing</strong> means deciding what to send for each address. For
-  a <em>static</em> site the web server matches a file on disk. For the
-  <em>Node.js</em> app, the app's own code matches a function (for example
-  <code>app.get("/")</code> and <code>app.post("/checkin")</code>). Hold onto this
-  difference; it explains everything below.</p>
-<h4>Part 3: Serve the static site with Nginx</h4>
-<p><strong>Nginx</strong> listens on port 80 and sends files from a folder
-  called the <strong>web root</strong>, which on Ubuntu is
-  <code>/var/www/html</code>.</p>
+<h4>Section A: Nginx Static Website with Local HTTPS</h4>
+<h4>Part 2: Install and start Nginx</h4>
+<p><strong>Nginx</strong> is a web server. It can read HTML, CSS, JavaScript and
+  image files from a directory and send them to a browser.</p>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Install and start Nginx</span>
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Install Nginx</span>
 sudo apt install nginx -y
-sudo systemctl enable nginx
+
+<span class="cm" style="color: #7fb069;"># Start Nginx now</span>
 sudo systemctl start nginx
-sudo systemctl status nginx --no-pager
 
-<span class="cm" style="color: #7fb069;"># Ask the server, on this machine, for its home page</span>
-curl -I http://localhost</pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Checkpoint</strong></p>
-      <p><code>curl -I http://localhost</code> returns <code>HTTP/1.1 200 OK</code>, and opening <code>http://localhost</code> in the VM's browser shows the default Nginx welcome page. If not, Nginx is not running &mdash; re-check the <code>systemctl status</code> output.</p>
-    </div>
-  </div>
+<span class="cm" style="color: #7fb069;"># Also start Nginx automatically whenever Ubuntu starts</span>
+sudo systemctl enable nginx
+
+<span class="cm" style="color: #7fb069;"># Show the current service status</span>
+sudo systemctl status nginx --no-pager</pre>
+<p>Open Firefox or another browser <strong>inside Ubuntu</strong> and visit:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">http://localhost</pre>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Checkpoint</strong></p>
+  <p>The browser should display the default Nginx welcome page. This proves that
+    Nginx is running and listening on HTTP port 80.</p>
 </div>
-<p>That welcome page is just the file in the web root. Replace it with your <code>first-website</code> from Lab 1 (your own files, or the example from <a href="https://github.com/CSE3CWA-5006/CSE3CWA-5006-Week-01" target="_blank" rel="noopener">the Week&nbsp;1 static-site repository</a>):</p>
+<h4>Part 3: Create the first Ubuntu local website from the command line</h4>
+<p>We will not download a website. We will create one directly in Ubuntu so
+  every student starts from the same point.</p>
+<p>The website files will be stored in:</p>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Get your static site from GitHub</span>
-git clone https://github.com/YOUR-GITHUB-USERNAME/first-website.git
-cd first-website
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">/var/www/first-ubuntu-site</pre>
+<p><code>/var/www</code> is the normal Ubuntu location for website files. The
+  new folder name is <code>first-ubuntu-site</code>.</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Create the website directory</span>
+sudo mkdir -p /var/www/first-ubuntu-site
 
-<span class="cm" style="color: #7fb069;"># Copy your files into the Nginx web root</span>
-sudo rm -rf /var/www/html/*
-sudo cp -r * /var/www/html/
+<span class="cm" style="color: #7fb069;"># Create index.html directly from the command line</span>
+sudo tee /var/www/first-ubuntu-site/index.html &gt; /dev/null &lt;&lt;'EOF'
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;My First Ubuntu Local Website&lt;/title&gt;
+  &lt;style&gt;
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 760px;
+      margin: 80px auto;
+      padding: 30px;
+      line-height: 1.6;
+      background: #f4f7fb;
+    }
 
-<span class="cm" style="color: #7fb069;"># Let the web server's user own and read the files</span>
-sudo chown -R www-data:www-data /var/www/html
-sudo find /var/www/html -type d -exec chmod 755 {} \;
-sudo find /var/www/html -type f -exec chmod 644 {} \;
+    main {
+      background: white;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main&gt;
+    &lt;h1&gt;My First Ubuntu Local Website&lt;/h1&gt;
+    &lt;p&gt;This HTML page is stored on Ubuntu and served by Nginx.&lt;/p&gt;
+    &lt;p&gt;The next step is to protect this local website with HTTPS.&lt;/p&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EOF
 
-<span class="cm" style="color: #7fb069;"># Test the config, reload, and check</span>
-sudo nginx -t
-sudo systemctl reload nginx
-curl -I http://localhost</pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>What those permission numbers mean</strong></p>
-      <p><code>chown www-data</code> makes the web server's user the owner so it may read the files. <code>755</code> on folders = owner full control, others may enter and read. <code>644</code> on files = owner may edit, others may read. Web files must be readable by the server but not writable by everyone.</p>
-    </div>
-  </div>
+<span class="cm" style="color: #7fb069;"># Allow Nginx to read the directory and file</span>
+sudo chown -R www-data:www-data /var/www/first-ubuntu-site
+sudo find /var/www/first-ubuntu-site -type d -exec chmod 755 {} \;
+sudo find /var/www/first-ubuntu-site -type f -exec chmod 644 {} \;
+
+<span class="cm" style="color: #7fb069;"># Confirm that index.html exists</span>
+ls -l /var/www/first-ubuntu-site</pre>
+<h4>Part 4: Understand where Nginx configuration files are stored</h4>
+<p>On Ubuntu, Nginx normally uses these two directories:</p>
+<ul>
+  <li><code>/etc/nginx/sites-available/</code> — stores site configuration
+    files, including sites not currently active.</li>
+  <li><code>/etc/nginx/sites-enabled/</code> — contains links to the sites that
+    Nginx should actually load.</li>
+</ul>
+<p>We will create this configuration file:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">/etc/nginx/sites-available/first-ubuntu-site</pre>
+<p>The file has no extension. That is normal for an Nginx site configuration.
+</p>
+<h4>Part 5: Generate a self-signed TLS certificate for localhost</h4>
+<p>A TLS certificate is used by the web server to encrypt HTTPS traffic. A
+  self-signed certificate provides encryption but is not signed by a public
+  Certificate Authority. Therefore, the browser will display a warning. That
+  warning is expected in this local exercise.</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo mkdir -p /etc/nginx/certs
+sudo chmod 700 /etc/nginx/certs
+
+<span class="cm" style="color: #7fb069;"># Create OpenSSL settings for localhost and 127.0.0.1</span>
+sudo tee /tmp/localhost-openssl.cnf &gt; /dev/null &lt;&lt;'EOF'
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+x509_extensions = v3_req
+distinguished_name = distinguished_name
+
+[distinguished_name]
+C = AU
+ST = Victoria
+L = Melbourne
+O = CSE3CWA-CSE5006
+OU = Local Lab
+CN = localhost
+
+[v3_req]
+subjectAltName = @alt_names
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+
+[alt_names]
+DNS.1 = localhost
+IP.1 = 127.0.0.1
+EOF
+
+<span class="cm" style="color: #7fb069;"># Generate the private key and self-signed certificate</span>
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout /etc/nginx/certs/first-ubuntu-site.key \
+  -out /etc/nginx/certs/first-ubuntu-site.crt \
+  -config /tmp/localhost-openssl.cnf
+
+<span class="cm" style="color: #7fb069;"># Protect the private key and inspect the certificate</span>
+sudo chmod 600 /etc/nginx/certs/first-ubuntu-site.key
+sudo chmod 644 /etc/nginx/certs/first-ubuntu-site.crt
+sudo openssl x509 -in /etc/nginx/certs/first-ubuntu-site.crt \
+  -noout -subject -issuer -dates -ext subjectAltName</pre>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Certificate and key</strong></p>
+  <p><code>.crt</code> is the certificate Nginx presents to the browser.
+    <code>.key</code> is the private key and must never be published or shared.
+  </p>
 </div>
-<h5>Understand the Nginx site configuration</h5>
-<p>The professional way is to give each site its own config file. Create one (open it in your editor of choice, e.g. <code>nano</code>):</p>
+<h4>Part 6: Create the complete Nginx site configuration</h4>
+<p>Open the configuration file:</p>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo mkdir -p /var/www/first-website
-sudo cp -r * /var/www/first-website/
-sudo chown -R www-data:www-data /var/www/first-website
-sudo nano /etc/nginx/sites-available/first-website</pre>
-<p>Put this inside, then read the explanation below it:</p>
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo nano /etc/nginx/sites-available/first-ubuntu-site</pre>
+<p>Paste the entire configuration below. Keep the comments beginning with
+  <code>#</code>.</p>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">server {
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"># HTTP server block: redirect HTTP to HTTPS.
+server {
     listen 80;
-    server_name _;
+    listen [::]:80;
+    server_name localhost;
 
-    root /var/www/first-website;
+    # Preserve the requested path while changing to HTTPS.
+    return 301 https://localhost$request_uri;
+}
+
+# HTTPS server block: serve the static website on port 443.
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name localhost;
+
+    # Website directory and default home page.
+    root /var/www/first-ubuntu-site;
     index index.html;
 
+    # Local certificate and private key.
+    ssl_certificate /etc/nginx/certs/first-ubuntu-site.crt;
+    ssl_certificate_key /etc/nginx/certs/first-ubuntu-site.key;
+
+    # Permit modern TLS versions.
+    ssl_protocols TLSv1.2 TLSv1.3;
+
     location / {
+        # Try a matching file or directory; otherwise return 404.
         try_files $uri $uri/ =404;
     }
 }</pre>
-<ul>
-  <li><code>listen 80;</code> &mdash; wait for visitors on the public HTTP port.</li>
-  <li><code>server_name _;</code> &mdash; match any host name (fine for an IP/localhost demo).</li>
-  <li><code>root /var/www/first-website;</code> &mdash; the folder to serve files from.</li>
-  <li><code>index index.html;</code> &mdash; the default file for <code>/</code>.</li>
-  <li><code>try_files $uri $uri/ =404;</code> &mdash; the routing rule: try the exact file, then a folder, else return 404.</li>
-</ul>
+<p>Save with <strong>Ctrl+O</strong>, press <strong>Enter</strong>, and close
+  with <strong>Ctrl+X</strong>.</p>
+<h4>Part 7: Enable, test and restart Nginx</h4>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Enable this site, disable the default, check, reload</span>
-sudo ln -s /etc/nginx/sites-available/first-website /etc/nginx/sites-enabled/first-website
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Disable the original default site</span>
 sudo rm -f /etc/nginx/sites-enabled/default
+
+<span class="cm" style="color: #7fb069;"># Enable the new site</span>
+sudo ln -s /etc/nginx/sites-available/first-ubuntu-site \
+  /etc/nginx/sites-enabled/first-ubuntu-site
+
+<span class="cm" style="color: #7fb069;"># Test before restarting</span>
 sudo nginx -t
-sudo systemctl reload nginx</pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Checkpoint</strong></p>
-      <p><code>sudo nginx -t</code> prints &ldquo;syntax is ok&rdquo; and &ldquo;test is successful&rdquo;, and <code>http://localhost</code> now shows <em>your</em> page, not the Nginx default. If <code>nginx -t</code> reports an error, re-open the config file and check for a missing <code>;</code> or <code>}</code>.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 4: The same site with Apache (alternative)</h4>
-<p><strong>Apache</strong> does the same core job. Use it <em>instead of</em>
-  Nginx, not at the same time, because both want port 80. Its web root on Ubuntu
-  is also <code>/var/www/html</code>.</p>
-<div class="alert alert-success"
-  style="background-color: #fef3c7; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-exclamation-triangle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Stop Nginx before starting Apache</strong></p>
-      <p>Only one program can hold port 80. If Nginx is running from Part 3, stop it first with <code>sudo systemctl stop nginx</code>, otherwise Apache fails to start with &ldquo;Address already in use&rdquo;.</p>
-    </div>
-  </div>
-</div>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Stop Nginx, then install and start Apache</span>
-sudo systemctl stop nginx
-sudo apt install apache2 -y
-sudo systemctl start apache2
-sudo systemctl status apache2 --no-pager
 
-<span class="cm" style="color: #7fb069;"># Copy your static site into the Apache web root</span>
-cd ~/first-website
-sudo rm -rf /var/www/html/*
-sudo cp -r * /var/www/html/
-sudo chown -R www-data:www-data /var/www/html
-
-<span class="cm" style="color: #7fb069;"># Reload and test</span>
-sudo systemctl reload apache2
-curl -I http://localhost</pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Nginx vs Apache, in one line</strong></p>
-      <p>Both serve files on port 80. Apache is older and very common in traditional hosting; Nginx is lighter and is also excellent at forwarding traffic to an app (a reverse proxy), which is what we need for Node.js next. For the rest of this lab we use Nginx, so switch back now: <code>sudo systemctl stop apache2</code> then <code>sudo systemctl start nginx</code>.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 5: Run the Node.js attendance app &mdash; and why it still needs Nginx</h4>
-<p>The static site was just files. The attendance app is a <strong>program</strong> that must keep running to answer visitors. Install Node.js and start the app (from <a href="https://github.com/SDinglatrobe/attendance" target="_blank" rel="noopener">the attendance repository on GitHub</a>):</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Install Node.js and npm</span>
-sudo apt install nodejs npm -y
-node -v
-npm -v
-
-<span class="cm" style="color: #7fb069;"># Get the app and start it</span>
-git clone https://github.com/SDinglatrobe/attendance.git
-cd attendance
-npm install
-npm start</pre>
-<p>It prints that it is listening on port 3000. Open <code>http://localhost:3000</code> to use it &mdash; this is the app routing requests itself. Stop it with <span class="kbd">Ctrl+C</span> for now.</p>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-lightbulb-o" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Why does a Node site still need Nginx? (important)</strong></p>
-      <p>The app works on port 3000, but real visitors expect a normal address on port 80 (HTTP) or 443 (HTTPS), with no <code>:3000</code>. You could try to run Node directly on port 80, but that is discouraged: ports below 1024 need root privileges (risky), and Node alone does not easily handle HTTPS certificates, efficient static-file serving, compression, or several sites on one machine.</p><p>So we put <strong>Nginx in front</strong>. Nginx listens on the public 80/443, deals with HTTPS, and quietly forwards each request to the app on port 3000. This is a <strong>reverse proxy</strong>. The visitor sees a clean address; Nginx and Node talk privately behind it. This is the standard professional pattern.</p>
-    </div>
-  </div>
-</div>
-<h5>Keep the app alive with PM2</h5>
-<p>If you close the terminal, <code>npm start</code> stops. A <strong>process manager</strong> called PM2 keeps it running in the background and restarts it after a reboot.</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo npm install -g pm2
-
-<span class="cm" style="color: #7fb069;"># Start the app through PM2 using the project's npm start</span>
-pm2 start npm --name attendance -- start
-pm2 status
-pm2 logs attendance
-
-<span class="cm" style="color: #7fb069;"># Make PM2 restart your apps after a reboot</span>
-pm2 save
-pm2 startup systemd
-<span class="cm" style="color: #7fb069;"># Run the command pm2 prints, then run: pm2 save</span></pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Checkpoint</strong></p>
-      <p><code>pm2 status</code> shows <code>attendance</code> with status <code>online</code>. <code>curl -I http://localhost:3000</code> returns <code>HTTP/1.1 200 OK</code>. If the status is <code>errored</code>, read <code>pm2 logs attendance</code>.</p>
-    </div>
-  </div>
-</div>
-<h5>Put Nginx in front (reverse proxy)</h5>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo nano /etc/nginx/sites-available/attendance</pre>
-<p>Put this inside, then read the explanation:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">server {
-    listen 80;
-    server_name _;
-
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}</pre>
-<ul>
-  <li><code>proxy_pass http://127.0.0.1:3000;</code> &mdash; forward every request to the app on port 3000.</li>
-  <li>The <code>proxy_set_header</code> lines pass the visitor's real host and IP to the app, which reads them via <code>app.set("trust proxy", true)</code> in the code.</li>
-</ul>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Enable the proxy site, disable the default, check, reload</span>
-sudo ln -s /etc/nginx/sites-available/attendance /etc/nginx/sites-enabled/attendance
-sudo rm -f /etc/nginx/sites-enabled/default
-sudo nginx -t
-sudo systemctl reload nginx
-
-<span class="cm" style="color: #7fb069;"># Now the app is reachable on the normal port 80</span>
-curl -I http://localhost</pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Checkpoint</strong></p>
-      <p><code>http://localhost</code> (no <code>:3000</code>) now shows the attendance check-in page. The reverse proxy is working: Nginx on port 80 is forwarding to Node on port 3000.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 6: Turn on HTTPS with a TLS certificate you create</h4>
-<p>HTTPS is HTTP wrapped in <strong>TLS</strong> encryption. A real public
-  site uses a free trusted certificate (for example from Let's Encrypt), but that
-  needs a real domain name. For local learning we create a <strong>self-signed</strong>
-  certificate: it encrypts traffic the same way, but because no trusted authority
-  vouches for it, the browser shows a one-time warning. That is expected and fine
-  for practice.</p>
-<p>Generate the certificate and its private key in one command:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Make a folder to hold the certificate and key</span>
-sudo mkdir -p /etc/nginx/certs
-
-<span class="cm" style="color: #7fb069;"># Create a self-signed certificate (.crt) and private key (.key), valid 365 days</span>
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout /etc/nginx/certs/attendance.key \
-  -out /etc/nginx/certs/attendance.crt \
-  -subj "/CN=localhost"</pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>What each part of that command means</strong></p>
-      <p><code>req -x509</code> makes a self-signed certificate (not a request to a real authority). <code>-nodes</code> means &ldquo;no passphrase on the key&rdquo; so the server can start unattended. <code>-days 365</code> sets one year of validity. <code>-newkey rsa:2048</code> creates a fresh 2048-bit key. <code>-keyout</code> and <code>-out</code> are the private key and certificate files. <code>-subj "/CN=localhost"</code> sets the name to localhost for this demo.</p>
-    </div>
-  </div>
-</div>
-<p>You can inspect what you created:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo openssl x509 -in /etc/nginx/certs/attendance.crt -noout -subject -dates</pre>
-<h5>Tell Nginx to use HTTPS and redirect HTTP to it</h5>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo nano /etc/nginx/sites-available/attendance</pre>
-<p>Replace the file contents with this. It serves HTTPS on 443 and sends plain HTTP on 80 to HTTPS:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">server {
-    listen 443 ssl;
-    server_name localhost;
-
-    ssl_certificate     /etc/nginx/certs/attendance.crt;
-    ssl_certificate_key /etc/nginx/certs/attendance.key;
-
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-
-server {
-    listen 80;
-    server_name localhost;
-    return 301 https://$host$request_uri;
-}</pre>
-<ul>
-  <li><code>listen 443 ssl;</code> &mdash; serve encrypted HTTPS on the standard port.</li>
-  <li><code>ssl_certificate</code> / <code>ssl_certificate_key</code> &mdash; the certificate and key you just generated.</li>
-  <li>The second <code>server</code> block listens on 80 and <code>return 301 https://...</code> permanently redirects visitors to HTTPS.</li>
-</ul>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># If the Ubuntu firewall (ufw) is active, allow HTTP and HTTPS</span>
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-
-<span class="cm" style="color: #7fb069;"># Check config and reload</span>
-sudo nginx -t
-sudo systemctl reload nginx
-
-<span class="cm" style="color: #7fb069;"># Test HTTPS locally. -k tells curl to accept the self-signed certificate.</span>
-curl -Ik https://localhost</pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Checkpoint</strong></p>
-      <p><code>curl -Ik https://localhost</code> returns <code>HTTP/1.1 200 OK</code>. In the browser, <code>https://localhost</code> shows a warning (because the certificate is self-signed) &mdash; choose to proceed, which is safe on your own machine. You then see the attendance app with a padlock in the address bar: it is running over HTTPS, behind Nginx, served from port 3000 underneath.</p>
-    </div>
-  </div>
-</div>
-<div class="alert alert-success"
-  style="background-color: #fef3c7; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-exclamation-triangle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Self-signed vs trusted</strong></p>
-      <p>A self-signed certificate encrypts traffic but browsers do not trust it automatically, so they warn. That is correct for local practice. On a real public server with a real domain you would instead run <code>sudo certbot --nginx -d yourdomain.com</code> to get a free certificate browsers trust with no warning.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 7: Quick checks when something does not work</h4>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Is the Node app running and on the right port?</span>
-pm2 status
-sudo ss -tulpn | grep node
-
-<span class="cm" style="color: #7fb069;"># Is the Nginx config valid and running?</span>
-sudo nginx -t
+<span class="cm" style="color: #7fb069;"># Load the new configuration and certificate</span>
+sudo systemctl restart nginx
 sudo systemctl status nginx --no-pager
 
-<span class="cm" style="color: #7fb069;"># Does the server answer over HTTP and HTTPS?</span>
-curl -I  http://localhost
+<span class="cm" style="color: #7fb069;"># -k allows curl to accept this self-signed certificate</span>
 curl -Ik https://localhost</pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Local files are kept here</strong></p>
-      <p>Running on your own machine, the attendance app writes check-ins to <code>data/attendance.json</code> and that file stays on disk &mdash; unlike Render's stateless free tier in Lab 1. Permanent storage is a main reason to run your own server.</p>
-    </div>
-  </div>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Never restart after a failed configuration test</strong></p>
+  <p>If <code>sudo nginx -t</code> reports an error, reopen the named file,
+    correct the reported line, save it, and test again.</p>
 </div>
+<p>Open <code>https://localhost</code> in the Ubuntu browser. Accept the
+  self-signed certificate warning for this local lab.</p>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Nginx success checkpoint</strong></p>
+  <p>The address remains <code>https://localhost</code> and the page displays
+    <strong>My First Ubuntu Local Website</strong>. The warning is expected
+    because the certificate is self-signed; HTTPS encryption is still operating.
+  </p>
+  <p>If Firefox browser shows "Risk" warning, you can click "Advanced" option to
+    accept the risk. </p>
+</div>
+<h4>Section B: Apache HTTPS Reverse Proxy for Attendance</h4>
+<h4>Part 8: Stop Nginx before starting Apache</h4>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo systemctl stop nginx
+sudo systemctl disable nginx
+sudo systemctl status nginx --no-pager</pre>
+<p><code>inactive (dead)</code> is correct. Nginx has released ports 80 and 443.
+</p>
+<h4>Part 9: Install Apache and enable the required modules</h4>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo apt install apache2 -y
+
+<span class="cm" style="color: #7fb069;"># TLS, reverse proxy, forwarded header and redirect modules</span>
+sudo a2enmod ssl
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2enmod headers
+sudo a2enmod rewrite
+
+sudo systemctl start apache2
+sudo systemctl enable apache2
+sudo systemctl status apache2 --no-pager</pre>
+<p>Open <code>http://localhost</code>. The Apache default page should appear,
+  proving Apache now owns port 80.</p>
+<h4>Part 10: Install Node.js and clone Attendance</h4>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Install Node.js and npm on Ubuntu</strong></p>
+  <p>Node.js is required to run JavaScript applications outside the browser. npm
+    is installed together with Node.js and is used to download project
+    dependencies and run project commands.</p>
+  <p>Open a terminal inside your Ubuntu virtual machine and run:</p>
+</div>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Add the NodeSource repository for Node.js 24</span>
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+
+<span class="cm" style="color: #7fb069;"># Install Node.js and npm</span>
+sudo apt-get install -y nodejs
+
+<span class="cm" style="color: #7fb069;"># Confirm that both tools are installed</span>
+node -v
+npm -v</pre>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Checkpoint</strong></p>
+  <p>The final two commands should display installed version numbers, for
+    example <code>v24.x.x</code> for Node.js and a version number for npm. If
+    both commands return version numbers, the installation is complete.</p>
+</div>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Node.js version</strong></p>
+  <p>Use Node.js 24 or later. </p>
+</div>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">mkdir -p ~/apps
+cd ~/apps
+git clone https://github.com/SDinglatrobe/attendance.git
+cd attendance
+ls -la
+npm install</pre>
+<p><code>git clone</code> downloads the project source. <code>npm install</code>
+  downloads the packages declared by the project.</p>
+<h4>Part 11: Test Attendance directly on port 3000</h4>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/apps/attendance
+export PORT=3000
+export ADMIN_PASSWORD=12345678
+npm start</pre>
+<p>Keep the terminal open and visit <code>http://localhost:3000</code>. Submit
+  student ID <code>12345678</code>. Then open
+  <code>http://localhost:3000/admin</code> and use temporary password
+  <code>12345678</code>.</p>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Direct application checkpoint</strong></p>
+  <p>The page loads on port 3000, student ID <code>12345678</code> can be
+    submitted, and the test record appears in <code>/admin</code>.</p>
+</div>
+<p>Return to the terminal and press <strong>Ctrl+C</strong>. This stops the
+  foreground process.</p>
+<h4>Part 12: PM2 — what it is, why it is needed and how to use it</h4>
+<p><strong>PM2 is a process manager for Node.js applications.</strong> Apache
+  does not execute Attendance. Apache forwards requests, while the Node.js
+  process must continue running independently on port 3000.</p>
+<p>Without PM2, <code>npm start</code> stops when the terminal closes, the
+  process crashes, or Ubuntu restarts. PM2 runs it in the background, provides
+  logs and status, restarts failed processes, and can restore them after reboot.
+</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo npm install -g pm2
+cd ~/apps/attendance
+
+<span class="cm" style="color: #7fb069;"># Start npm start under PM2 with the required values</span>
+PORT=3000 ADMIN_PASSWORD=12345678 \
+  pm2 start npm --name attendance -- start
+
+pm2 status
+pm2 logs attendance --lines 50</pre>
+<p>Press Ctrl+C to leave the log view; the application remains running.</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -I http://127.0.0.1:3000
+
+<span class="cm" style="color: #7fb069;"># Save the process and configure restoration after reboot</span>
+pm2 save
+pm2 startup systemd
+
+<span class="cm" style="color: #7fb069;"># Copy and execute the exact sudo command printed by PM2.</span>
+<span class="cm" style="color: #7fb069;"># Then save again:</span>
+pm2 save</pre>
+<p>Useful commands:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">pm2 status
+pm2 restart attendance
+pm2 stop attendance
+pm2 start attendance
+pm2 logs attendance</pre>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>PM2 with Nginx or Apache</strong></p>
+  <p>PM2 performs the same application-management role behind either server.
+    Nginx or Apache owns HTTP/HTTPS; PM2 keeps Node.js running.</p>
+</div>
+<h4>Part 13: Generate Apache's self-signed certificate</h4>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo mkdir -p /etc/apache2/certs
+sudo chmod 700 /etc/apache2/certs
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout /etc/apache2/certs/attendance-local.key \
+  -out /etc/apache2/certs/attendance-local.crt \
+  -config /tmp/localhost-openssl.cnf
+
+sudo chmod 600 /etc/apache2/certs/attendance-local.key
+sudo chmod 644 /etc/apache2/certs/attendance-local.crt
+sudo openssl x509 -in /etc/apache2/certs/attendance-local.crt \
+  -noout -subject -dates -ext subjectAltName</pre>
+<h4>Part 14: Create the Apache site configuration</h4>
+<p>Apache stores available sites in <code>/etc/apache2/sites-available/</code>.
+  Apache site files normally end with <code>.conf</code>.</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo nano /etc/apache2/sites-available/attendance-local.conf</pre>
+<p>Paste the complete commented configuration:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"># HTTP virtual host: redirect every request to HTTPS.
+&lt;VirtualHost *:80&gt;
+    ServerName localhost
+
+    RewriteEngine On
+    RewriteRule ^ https://localhost%{REQUEST_URI} [R=301,L]
+&lt;/VirtualHost&gt;
+
+# HTTPS virtual host: terminate TLS and forward to Node.js.
+&lt;VirtualHost *:443&gt;
+    ServerName localhost
+
+    # Enable TLS and identify the certificate files.
+    SSLEngine on
+    SSLCertificateFile /etc/apache2/certs/attendance-local.crt
+    SSLCertificateKeyFile /etc/apache2/certs/attendance-local.key
+
+    # Preserve browser host information.
+    ProxyPreserveHost On
+
+    # Never operate as an open forward proxy.
+    ProxyRequests Off
+
+    # Forward all paths to Attendance on local port 3000.
+    ProxyPass / http://127.0.0.1:3000/
+    ProxyPassReverse / http://127.0.0.1:3000/
+
+    # Tell the application that the browser used HTTPS.
+    RequestHeader set X-Forwarded-Proto "https"
+
+    # Dedicated files for access and error messages.
+    ErrorLog ${APACHE_LOG_DIR}/attendance-local-error.log
+    CustomLog ${APACHE_LOG_DIR}/attendance-local-access.log combined
+&lt;/VirtualHost&gt;</pre>
+<p>Save with Ctrl+O, Enter, and close with Ctrl+X.</p>
+<h4>Part 15: Enable, test and restart Apache</h4>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo a2dissite 000-default.conf
+sudo a2dissite default-ssl.conf
+sudo a2ensite attendance-local.conf
+
+<span class="cm" style="color: #7fb069;"># Test before restarting</span>
+sudo apache2ctl configtest
+
+sudo systemctl restart apache2
+sudo systemctl status apache2 --no-pager
+
+<span class="cm" style="color: #7fb069;"># Test the backend and then Apache HTTPS</span>
+curl -I http://127.0.0.1:3000
+curl -Ik https://localhost</pre>
+<p>A successful configuration test prints <code>Syntax OK</code>.</p>
+<h4>Part 16: Complete the Apache HTTPS browser test</h4>
+<p>Open <code>https://localhost</code>, accept the local self-signed warning,
+  and confirm that Attendance appears without <code>:3000</code>.</p>
+<ol class="steps">
+  <li>Confirm the address starts with <code>https://</code>.</li>
+  <li>Submit student ID <code>12345678</code>.</li>
+  <li>Open <code>https://localhost/admin</code>.</li>
+  <li>Use temporary password <code>12345678</code>.</li>
+  <li>Confirm the test record is visible.</li>
+</ol>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Apache success checkpoint</strong></p>
+  <p>Apache handles HTTPS on port 443, then forwards requests to the PM2-managed
+    Attendance process on port 3000. The browser never needs to display port
+    3000.</p>
+</div>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Temporary classroom password only</strong></p>
+  <p><code>12345678</code> is deliberately simple for a reproducible local test.
+    Never use it for a real deployment.</p>
+</div>
+<h4>Part 17: Understand the completed architecture</h4>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">Browser
+  |  HTTPS: https://localhost on port 443
+  v
+Apache
+  |  TLS ends here; request is reverse-proxied
+  v
+Node.js Attendance
+  |  private local service: 127.0.0.1:3000
+  v
+Response returns through Apache to the browser</pre>
+<ul>
+  <li><strong>Apache</strong> owns ports 80 and 443 and manages TLS.</li>
+  <li><strong>Node.js</strong> executes the Attendance application.</li>
+  <li><strong>PM2</strong> keeps the Node.js process running.</li>
+  <li><strong>The self-signed certificate</strong> encrypts the local
+    browser-to-Apache connection but is not publicly trusted.</li>
+</ul>
+<h4>Part 18: Troubleshooting</h4>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Which programs own ports 80, 443 and 3000?</span>
+sudo ss -ltnp | grep -E ':80|:443|:3000'
+
+<span class="cm" style="color: #7fb069;"># Apache configuration, service and logs</span>
+sudo apache2ctl configtest
+sudo systemctl status apache2 --no-pager
+sudo journalctl -u apache2 -n 50 --no-pager
+sudo tail -n 50 /var/log/apache2/attendance-local-error.log
+
+<span class="cm" style="color: #7fb069;"># Attendance process and direct backend test</span>
+pm2 status
+pm2 logs attendance --lines 100
+curl -I http://127.0.0.1:3000</pre>
+<p>If Apache reports that port 80 or 443 is already in use:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo systemctl stop nginx
+sudo systemctl restart apache2</pre>
+<p>If Apache shows <strong>503 Service Unavailable</strong>, Apache is running
+  but Attendance is probably not listening on port 3000:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">pm2 restart attendance
+pm2 status
+curl -I http://127.0.0.1:3000</pre>
+<h4>Part 19: Optional — switch between Apache and Nginx</h4>
+<p>Return to the Nginx static website:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo systemctl stop apache2
+sudo systemctl disable apache2
+sudo systemctl enable nginx
+sudo systemctl start nginx</pre>
+<p>Return to Apache Attendance:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo systemctl stop nginx
+sudo systemctl disable nginx
+sudo systemctl enable apache2
+sudo systemctl start apache2</pre>
 <h4>Completion checklist</h4>
 <ul>
-  <li>The static site is served by Nginx at <code>http://localhost</code>.</li>
-  <li>You served the same site with Apache at least once, and can say why you do not run both together.</li>
-  <li>The attendance app runs under PM2 and is reached through Nginx, not on <code>:3000</code> directly.</li>
-  <li>You can explain in one or two sentences why a Node site still uses Nginx in front.</li>
-  <li>You generated a TLS certificate and reached the app over <code>https://localhost</code>.</li>
-  <li>You can explain what <code>listen 443 ssl</code>, <code>root</code>, <code>try_files</code> and <code>proxy_pass</code> each do.</li>
+  <li>You created <code>/var/www/first-ubuntu-site/index.html</code> from the
+    Ubuntu command line.</li>
+  <li>You created and enabled
+    <code>/etc/nginx/sites-available/first-ubuntu-site</code>.</li>
+  <li>You generated a self-signed certificate with localhost SAN entries.</li>
+  <li>Nginx displayed <strong>My First Ubuntu Local Website</strong> at
+    <code>https://localhost</code>.</li>
+  <li>You stopped Nginx before starting Apache.</li>
+  <li>You cloned Attendance into <code>~/apps/attendance</code> and ran
+    <code>npm install</code>.</li>
+  <li>PM2 shows Attendance as <code>online</code>.</li>
+  <li>You created and enabled
+    <code>/etc/apache2/sites-available/attendance-local.conf</code>.</li>
+  <li>Apache displayed Attendance at <code>https://localhost</code> without
+    <code>:3000</code>.</li>
+  <li>You tested student ID <code>12345678</code> and admin password
+    <code>12345678</code>.</li>
+  <li>You can explain the roles of Apache, Node.js, PM2 and TLS.</li>
 </ul>
-<p style="text-align: center; font-size: 0.78rem; color: #8a8f98; margin-top: 2.5rem;">Designed by Dr Shuo Ding &copy; 2026</p>
+<p
+  style="text-align: center; font-size: 0.78rem; color: #8a8f98; margin-top: 2.5rem;">
+  Designed by Dr Shuo Ding © 2026</p>
