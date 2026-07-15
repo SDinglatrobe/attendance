@@ -27,7 +27,7 @@ const DATA_DIR = path.join(__dirname, "data");
 const DATA_FILE = path.join(DATA_DIR, "attendance.json");
 const SETTINGS_FILE = path.join(DATA_DIR, "settings.json");
 const URL_FILE = path.join(__dirname, "url.txt");
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "171717";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "12345678";
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
