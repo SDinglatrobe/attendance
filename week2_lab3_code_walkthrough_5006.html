@@ -8,288 +8,126 @@
 <h4 class="resources-signpost" style="margin-bottom: 1rem;"><img
     class="img-fluid" style="vertical-align: middle; margin-right: 0.5rem;"
     src="/theme/latrobe/assets/2023/SVG/resources.svg" alt="" width="50"
-    height="50">Lab 3: Understand the Attendance App &mdash; Frontend, Backend, npm, curl</h4>
-<div class="alert alert-success"
-  style="background-color: #e7e0f5; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-graduation-cap" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Who does this lab?</strong></p>
-      <p>This lab is for <strong>CSE5006 students only</strong>. CSE3CWA students are not required to do it (they may read it for interest). It uses the attendance app from Lab 1 and Lab 2.</p>
-    </div>
-  </div>
-</div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-desktop" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Before you start: your environment</strong></p>
-      <p>All labs assume an <strong>Ubuntu</strong> machine running in <strong>VMware</strong>. Open a terminal inside that Ubuntu virtual machine and run every command there.</p><p>All commands run in the terminal of your Ubuntu virtual machine. You only need Node.js installed (see Lab 2, Part 5 if you have not installed it yet).</p>
-    </div>
-  </div>
-</div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-pencil" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Editing files on Ubuntu</strong></p>
-      <p>You will edit text files on the command line. If you are new to terminal editors, read the official guides first: <a href="https://www.nano-editor.org/dist/latest/nano.html" target="_blank" rel="noopener">GNU nano manual</a> (beginner-friendly) and the <a href="https://www.vim.org/docs.php" target="_blank" rel="noopener">Vim documentation</a> (run <code>vimtutor</code> in a terminal for a hands-on tutorial). Use whichever you prefer; examples below use <code>nano</code>.</p>
-    </div>
-  </div>
-</div>
-<p>So far you deployed the attendance app without looking inside it. Here you
-  open it up. You will learn what <strong>frontend</strong> and
-  <strong>backend</strong> mean and where each lives in this project, understand
-  what <strong>npm</strong> does, make a tiny safe change to the frontend (a font
-  size and some text), and test the backend directly with <strong>curl</strong>.
-  We change as little code as possible &mdash; the goal is understanding, not
-  rewriting.</p>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-lightbulb-o" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>What you will achieve</strong></p>
-      <p>A clear mental model of frontend vs backend for this app.</p><p>Knowing what <code>npm install</code> and <code>npm start</code> actually do.</p><p>One small visible change you made to the frontend yourself.</p><p>Hands-on testing of backend routes with curl, reading real HTTP status codes.</p>
-    </div>
-  </div>
-</div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-download" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Where to get the attendance project</strong></p>
-      <p>Download or clone it from <a href="https://github.com/SDinglatrobe/attendance" target="_blank" rel="noopener">the attendance repository on GitHub</a>. You can either run <code>git clone</code> on its address, or use the green <strong>Code &rarr; Download ZIP</strong> button and unzip it.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 1: Run the app locally so you can experiment</h4>
-<p>Get the code from <a href="https://github.com/SDinglatrobe/attendance" target="_blank" rel="noopener">the attendance repository on GitHub</a> and start it. You only need Node.js (see Lab 2, Part 5 if needed).</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">git clone https://github.com/SDinglatrobe/attendance.git
-cd attendance
+    height="50">Lab 3: Understand and Test the Attendance Backend with npm and curl</h4>
+<div style="border-left: 3px solid #8b6fb0; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <span class="fa fa-graduation-cap" style="color: #8b6fb0; margin-right: 0.4rem;" aria-hidden="true"></span>
+  <p><strong>Who does this lab?</strong></p>
+  <p>This lab is for <strong>CSE5006 students only</strong>. CSE3CWA students may read it for additional practice. It uses a separate local copy of the Attendance project and does not change the copy used in Lab 1 or Lab 2.</p>
+</div><div style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <span class="fa fa-desktop" style="color: #5a9e6f; margin-right: 0.4rem;" aria-hidden="true"></span>
+  <p><strong>Before you start: your environment</strong></p>
+  <p>Run every command in the terminal of your <strong>Ubuntu virtual machine</strong>. This lab uses Node.js, npm, Git and curl. It does not use Render, HTTPS, Nginx, Apache or PM2.</p>
+</div><p>In this lab you will download a clean copy of the Attendance project, install its Node.js dependencies, run the backend locally, and test its routes directly with <strong>curl</strong>. You will observe successful, duplicate, unknown and invalid student submissions, log in to the administrator route, and inspect the JSON file written by the backend.</p><div style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <span class="fa fa-lightbulb-o" style="color: #5a9e6f; margin-right: 0.4rem;" aria-hidden="true"></span>
+  <p><strong>What you will achieve</strong></p>
+  <p>You will understand what <code>npm install</code> and <code>npm start</code> do.</p><p>You will run an Express backend locally on port <code>3000</code>.</p><p>You will test backend routes without relying on the browser.</p><p>You will verify that a successful request becomes a stored JSON record.</p>
+</div><h4>Part 1: Install and verify the required tools</h4><p>Install Git, curl and Node.js 24. npm is installed together with Node.js. The project requires Node.js 18 or newer.</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Install Git and curl</span>
+sudo apt update
+sudo apt install git curl ca-certificates -y
+
+<span class="cm" style="color: #7fb069;"># Add the NodeSource repository for Node.js 24</span>
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+
+<span class="cm" style="color: #7fb069;"># Install Node.js and npm</span>
+sudo apt-get install -y nodejs
+
+<span class="cm" style="color: #7fb069;"># Verify the installed tools</span>
+git --version
+curl --version
+node -v
+npm -v</pre><div style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <span class="fa fa-info-circle" style="color: #5a9e6f; margin-right: 0.4rem;" aria-hidden="true"></span>
+  <p><strong>Checkpoint</strong></p>
+  <p><code>node -v</code> should show <code>v18</code> or newer; normally this installation shows <code>v24.x.x</code>. <code>npm -v</code>, <code>git --version</code> and <code>curl --version</code> must also print version information.</p>
+</div><h4>Part 2: Download a clean Lab 3 copy</h4><p>Use a separate folder called <code>attendance-lab3</code>. The first command removes only an earlier Lab 3 practice copy, allowing everyone to start with the same files.</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~
+rm -rf ~/attendance-lab3
+git clone https://github.com/SDinglatrobe/attendance.git attendance-lab3
+cd ~/attendance-lab3
+pwd
+ls</pre><p>You should see files including <code>server.js</code>, <code>package.json</code>, <code>package-lock.json</code>, <code>5006.txt</code>, <code>3CWA.txt</code> and the <code>data</code> folder.</p><div style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <span class="fa fa-exclamation-triangle" style="color: #d4a72c; margin-right: 0.4rem;" aria-hidden="true"></span>
+  <p><strong>Always work in the project folder</strong></p>
+  <p>Before running npm or reading the data file, use <code>cd ~/attendance-lab3</code>. Commands such as <code>npm start</code> fail when run from a folder that does not contain <code>package.json</code>.</p>
+</div><h4>Part 3: Understand the project definition</h4><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance-lab3
+cat package.json</pre><p>The important fields are:</p><ul><li><code>scripts.start</code> is <code>node server.js</code>. Therefore, <code>npm start</code> launches the backend.</li><li><code>dependencies</code> lists Express and QRCode, which must be installed before the application can run.</li><li><code>engines.node</code> requires Node.js 18 or newer.</li></ul><h4>Part 4: Install the project dependencies</h4><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance-lab3
 npm install
-npm start
+npm list --depth=0</pre><p><code>npm install</code> reads <code>package.json</code> and <code>package-lock.json</code>, downloads the required packages, and creates <code>node_modules</code>. Do not upload or manually edit <code>node_modules</code>.</p><h4>Part 5: Make sure port 3000 is available</h4><p>The Attendance server uses port <code>3000</code>. Check whether another program is already listening there:</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo ss -ltnp | grep ':3000' || true</pre><p>If this command shows no output, continue. If it shows a PID, inspect and stop that old process:</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Replace PID_NUMBER with the number shown by ss</span>
+ps -fp PID_NUMBER
+kill PID_NUMBER
+sleep 2
+sudo ss -ltnp | grep ':3000' || true</pre><div style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <span class="fa fa-exclamation-triangle" style="color: #d4a72c; margin-right: 0.4rem;" aria-hidden="true"></span>
+  <p><strong>Do not stop unrelated system processes</strong></p>
+  <p>Only stop a process when you recognise it as an earlier Attendance or Node.js test. Ask your tutor if you are unsure.</p>
+</div><h4>Part 6: Start the backend</h4><p>Use a known local administrator password so that every command later in this lab matches the running server.</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance-lab3
+ADMIN_PASSWORD=12345678 npm start</pre><p>The terminal should display:</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">Attendance system running on port 3000
+First class date: 2026-07-14
+Time zone: Australia/Melbourne</pre><div style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <span class="fa fa-info-circle" style="color: #5a9e6f; margin-right: 0.4rem;" aria-hidden="true"></span>
+  <p><strong>Keep Terminal 1 running</strong></p>
+  <p><code>npm start</code> occupies the terminal because the server is running continuously. Leave this terminal open. Open a <strong>second Ubuntu terminal</strong> for all curl commands below.</p>
+</div><p>Optional browser check inside Ubuntu: open <code>http://localhost:3000/?week=99</code>. You should see the Attendance Check page and a message stating that test mode is open.</p><h4>Part 7: Prepare clean and repeatable test data</h4><p>In Terminal 2, back up the existing practice data and replace it with an empty JSON structure. This affects only <code>~/attendance-lab3</code>.</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance-lab3
+cp data/attendance.json data/attendance.before-lab3.json
 
-<span class="cm" style="color: #7fb069;"># Open http://localhost:3000 in the VM's browser to see the app.</span></pre>
-<h4>Part 2: What is npm, really?</h4>
-<p><strong>npm</strong> (Node Package Manager) comes with Node.js. It does two jobs in this project:</p>
-<ul>
-  <li><strong><code>npm install</code></strong> reads the <code>dependencies</code>
-    in <code>package.json</code> and downloads them into a folder called
-    <code>node_modules</code>. For this app the dependencies are
-    <code>express</code> (the web framework) and <code>qrcode</code> (to draw the
-    QR code). Run it once before starting, and again whenever dependencies change.</li>
-  <li><strong><code>npm start</code></strong> runs the command in the
-    <code>scripts.start</code> field of <code>package.json</code>. Here that is
-    <code>node server.js</code>, which launches the backend.</li>
+cat > data/attendance.json <<'EOF'
+{
+  "weeks": {}
+}
+EOF
+
+cat data/attendance.json</pre><div style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <span class="fa fa-lightbulb-o" style="color: #5a9e6f; margin-right: 0.4rem;" aria-hidden="true"></span>
+  <p><strong>Why use week 99?</strong></p>
+  <p><code>week=99</code> is only an isolated test-session number. It is not a real teaching week. Test mode accepts the supplied week value, so using 99 prevents this exercise from mixing with genuine Week 1, Week 2 or other attendance records.</p>
+</div><h4>Part 8: Test the backend with curl</h4><p>Keep Terminal 1 running. Run the following commands in Terminal 2. The current application returns HTTP <code>200 OK</code> for the four check-in outcomes below; the result is described in the returned HTML body.</p><h5>Test 1: Request the main page</h5><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i "http://localhost:3000/?week=99"</pre><p>Expected: <code>HTTP/1.1 200 OK</code>, <strong>Attendance Check</strong>, and the test-mode message.</p><h5>Test 2: Successful check-in</h5><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i -X POST http://localhost:3000/checkin   -H "Content-Type: application/x-www-form-urlencoded"   -d "studentId=99500001&week=99"</pre><p>Expected: <code>HTTP/1.1 200 OK</code>, <strong>Check-in Successful</strong>, student ID <code>99500001</code>, name <strong>Adams Isla</strong>, and <code>week-99</code>.</p><h5>Test 3: Duplicate submission</h5><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i -X POST http://localhost:3000/checkin   -d "studentId=99500001&week=99"</pre><p>Expected: <code>HTTP/1.1 200 OK</code> and <strong>Already Submitted</strong>.</p><h5>Test 4: Correct format but not in the roster</h5><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i -X POST http://localhost:3000/checkin   -d "studentId=99999999&week=99"</pre><p>Expected: <code>HTTP/1.1 200 OK</code> and <strong>Student Not Found</strong>.</p><h5>Test 5: Invalid student ID format</h5><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i -X POST http://localhost:3000/checkin   -d "studentId=abc&week=99"</pre><p>Expected: <code>HTTP/1.1 200 OK</code> and <strong>Invalid Student ID</strong>.</p><h4>Part 9: Test administrator authentication with curl</h4><p>The login route returns a cookie. curl saves that cookie to a file and sends it with the next request.</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance-lab3
+rm -f admin-cookies.txt
+
+<span class="cm" style="color: #7fb069;"># Log in and save the administrator cookie</span>
+curl -i -c admin-cookies.txt   -X POST http://localhost:3000/admin/login   -d "password=12345678"
+
+<span class="cm" style="color: #7fb069;"># Use the saved cookie to open the protected admin page</span>
+curl -i -b admin-cookies.txt   http://localhost:3000/admin</pre><p>Expected login result: <code>HTTP/1.1 302 Found</code>. Expected protected-page result: <code>HTTP/1.1 200 OK</code>, <strong>Attendance Admin</strong>, and the record for <code>99500001</code>.</p><h4>Part 10: Inspect the stored backend data</h4><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance-lab3
+cat data/attendance.json</pre><p>The JSON should contain a <code>week-99</code> object and a record for student <code>99500001</code> / <strong>Adams Isla</strong>. This demonstrates the backend flow:</p><p><code>curl request &rarr; Express route &rarr; roster validation &rarr; duplicate check &rarr; JSON write &rarr; HTML response</code>.</p><h4>Part 11: Stop the server</h4><p>Return to Terminal 1 and press <span class="kbd">Ctrl+C</span>. Then verify in Terminal 2:</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i --max-time 2 http://localhost:3000/</pre><p>Expected: curl reports that it cannot connect. This confirms that the local Node.js backend has stopped.</p><h4>Part 12: Troubleshooting</h4><h5><code>npm start</code> reports <code>EADDRINUSE</code></h5><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">sudo ss -ltnp | grep ':3000' || true
+ps -fp PID_NUMBER
+kill PID_NUMBER</pre><h5>curl cannot connect</h5><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance-lab3
+ADMIN_PASSWORD=12345678 npm start</pre><p>Keep that terminal running and use a second terminal for curl.</p><h5><code>npm</code> cannot find <code>package.json</code></h5><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance-lab3
+pwd
+ls
+npm install</pre><h5>The first valid check-in says Already Submitted</h5><p>Reset only the Lab 3 practice data, then retry:</p><pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance-lab3
+cat > data/attendance.json <<'EOF'
+{
+  "weeks": {}
+}
+EOF</pre><h4>Completion checklist (CSE5006)</h4><ul>
+  <li>Node.js 18 or newer, npm, Git and curl are installed.</li>
+  <li>The project was cloned into <code>~/attendance-lab3</code>.</li>
+  <li><code>npm install</code> completed and <code>npm start</code> launched the backend.</li>
+  <li>The main page returned HTTP 200.</li>
+  <li>The valid, duplicate, unknown and invalid student curl tests produced the expected HTML results.</li>
+  <li>The administrator login returned HTTP 302 and the authenticated admin page returned HTTP 200.</li>
+  <li><code>data/attendance.json</code> contains the successful <code>week-99</code> record.</li>
+  <li>The server was stopped with <span class="kbd">Ctrl+C</span>.</li>
 </ul>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Look at the project's own description of itself</span>
-cat package.json
-
-<span class="cm" style="color: #7fb069;"># The key parts you just learned about:</span>
-<span class="cm" style="color: #7fb069;">#   "scripts": { "start": "node server.js" }</span>
-<span class="cm" style="color: #7fb069;">#   "dependencies": { "express": "^4.18.3", "qrcode": "^1.5.4" }</span>
-<span class="cm" style="color: #7fb069;">#   "engines": { "node": "&gt;=18" }</span></pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Why node_modules is not on GitHub</strong></p>
-      <p>The downloaded packages in <code>node_modules</code> are large and can be rebuilt anytime from <code>package.json</code>. So projects do not upload that folder; instead the host (or you) runs <code>npm install</code> to recreate it. That is exactly why Render's build command is <code>npm install</code>.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 3: Frontend vs backend &mdash; what is the difference here?</h4>
-<p>Every web app has two sides:</p>
-<ul>
-  <li>The <strong>frontend</strong> is what the visitor sees and interacts with in
-    the browser: the HTML structure, the CSS styling, the text and buttons. It runs
-    on the <em>user's</em> device.</li>
-  <li>The <strong>backend</strong> is the program on the server: it decides what
-    each address does, checks the student ID, enforces &ldquo;one check-in per
-    week&rdquo;, and saves records. It runs on the <em>server</em>, never in the
-    visitor's browser.</li>
-</ul>
-<p>This app is deliberately simple: <strong>both</strong> the frontend and the
-  backend live in one file, <code>server.js</code>. The backend builds the
-  frontend as HTML text and sends it to the browser. That is why there is no
-  separate folder of HTML files here.</p>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-lightbulb-o" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>How to tell which is which in server.js</strong></p>
-      <p>The <strong>frontend</strong> is inside the <code>pageTemplate(...)</code> function: the <code>&lt;style&gt;</code> block (CSS) and the HTML strings with <code>&lt;h1&gt;</code>, forms and buttons. The <strong>backend</strong> is the <code>app.get(...)</code> and <code>app.post(...)</code> route handlers and the helper functions that validate IDs, manage weeks, and read/write the records file.</p>
-    </div>
-  </div>
-</div>
-<table class="compare">
-  <thead><tr><th>Concern</th><th>Side</th><th>Where in <code>server.js</code></th></tr></thead>
-  <tbody>
-    <tr><td>Colours, font sizes, layout</td><td>Frontend</td><td>The <code>&lt;style&gt;</code> block in <code>pageTemplate</code></td></tr>
-    <tr><td>Page text, headings, buttons</td><td>Frontend</td><td>The HTML in each <code>res.send(pageTemplate({ ... }))</code></td></tr>
-    <tr><td>Which URL does what</td><td>Backend</td><td><code>app.get("/")</code>, <code>app.post("/checkin")</code>, etc.</td></tr>
-    <tr><td>Check the student ID is valid and in the roster</td><td>Backend</td><td>The <code>/checkin</code> handler and <code>getStudentByCode</code></td></tr>
-    <tr><td>One check-in per week; save records</td><td>Backend</td><td>The <code>/checkin</code> handler and <code>writeJsonFile</code></td></tr>
-  </tbody>
-</table>
-<h4>Part 4: Make one small frontend change (font size and text)</h4>
-<p>Let us change something visible without touching any backend logic. Open <code>server.js</code> in your editor (for example <code>nano</code>):</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">nano server.js</pre>
-<p><strong>Change 1 &mdash; the heading font size (CSS).</strong> Find this line inside the <code>&lt;style&gt;</code> block:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">    h1 { font-size: 28px; margin: 0 0 8px; text-align:center; }</pre>
-<p>Change <code>28px</code> to something larger, for example <code>40px</code>:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">    h1 { font-size: 40px; margin: 0 0 8px; text-align:center; }</pre>
-<p><strong>Change 2 &mdash; the main heading text (HTML).</strong> Find this line in the <code>app.get("/")</code> handler:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">      &lt;h1&gt;Attendance Check&lt;/h1&gt;</pre>
-<p>Change the text between the tags (keep the tags exactly as they are):</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">      &lt;h1&gt;Class Check-In&lt;/h1&gt;</pre>
-<p>Save the file (in nano: <span class="kbd">Ctrl+O</span>, <span class="kbd">Enter</span>, then <span class="kbd">Ctrl+X</span>). Restart the app so the change loads:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Stop the running app with Ctrl+C in its terminal, then start it again</span>
-npm start
-
-<span class="cm" style="color: #7fb069;"># Refresh http://localhost:3000 -- the heading is larger and says "Class Check-In".</span></pre>
-<div class="alert alert-success"
-  style="background-color: #fef3c7; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-exclamation-triangle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Change only what is shown; keep the tags and quotes</strong></p>
-      <p>Edit the text <em>between</em> <code>&lt;h1&gt;</code> and <code>&lt;/h1&gt;</code>, and the <em>number</em> in <code>font-size</code>. Do not delete the tags, the backticks around the HTML, or the surrounding code. If the app fails to start after editing, you very likely removed a quote, a backtick, or a bracket &mdash; undo your change and try again carefully.</p>
-    </div>
-  </div>
-</div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Why a restart is needed</strong></p>
-      <p>This backend builds the HTML from the code loaded in memory. Node loads <code>server.js</code> when it starts, so a source change only takes effect after you stop and start the app again. (Tools like <code>nodemon</code> can auto-restart during development, but we keep it manual here.)</p>
-    </div>
-  </div>
-</div>
-<h4>Part 5: Test the backend directly with curl</h4>
-<p>The browser is one way to reach the backend; <strong>curl</strong> is
-  another. curl sends an HTTP request from the terminal and shows the response,
-  with no browser involved. This lets you test backend routes precisely. Open a
-  <strong>second terminal</strong> in your VM (leave the app running in the first).
-  Add <code>-i</code> to also see the HTTP status line (200, 400, ...).</p>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>About the multi-line commands and the week value</strong></p>
-      <p>Each command below is shown on multiple lines using a backslash <code>\</code> at the end of a line, which is how Ubuntu's bash joins lines. If you prefer, a single-line version of each command is given underneath &mdash; type it all on one line with no backslash.</p><p>The <code>week</code> value is only a demonstration parameter. In the app's default test mode the server uses the current teaching week regardless of the number you send, and it allows one check-in per student for that week. So sending a different <code>week</code> number does not let the same student check in twice.</p>
-    </div>
-  </div>
-</div>
-<p><strong>1) Ask the backend for the check-in page (the frontend HTML it builds):</strong></p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i http://localhost:3000/</pre>
-<p><strong>2) Submit a check-in for a real roster student (CSE5006 id 99500001):</strong></p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Multi-line form</span>
-curl -i -X POST http://localhost:3000/checkin \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "studentId=99500001"
-
-<span class="cm" style="color: #7fb069;"># Single-line form (same thing)</span>
-curl -i -X POST http://localhost:3000/checkin -d "studentId=99500001"</pre>
-<p>Expected: <code>HTTP/1.1 200 OK</code> and a page that says <strong>Check-in Successful</strong> with the name <strong>Adams Isla</strong>.</p>
-<p><strong>3) Submit the SAME student again &mdash; the backend blocks a second check-in:</strong></p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i -X POST http://localhost:3000/checkin -d "studentId=99500001"</pre>
-<p>Expected: a page that says <strong>Already Submitted</strong>.</p>
-<p><strong>4) Submit an ID that is not in the roster:</strong></p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i -X POST http://localhost:3000/checkin -d "studentId=99999999"</pre>
-<p>Expected: <strong>Student Not Found</strong>.</p>
-<p><strong>5) Submit a badly formatted ID:</strong></p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">curl -i -X POST http://localhost:3000/checkin -d "studentId=abc"</pre>
-<p>Expected: <strong>Invalid Student ID</strong>.</p>
-<p>You did all of this without a browser, proving the rules live in the
-  <strong>backend</strong>, not the frontend.</p>
-<p>You can also check the other routes:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># The weekly QR page (returns 200 OK and an HTML page with the QR image)</span>
-curl -i http://localhost:3000/qr
-
-<span class="cm" style="color: #7fb069;"># The admin page without logging in (returns the admin login page)</span>
-curl -i http://localhost:3000/admin</pre>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>What you are observing</strong></p>
-      <p>The exact same backend logic ran in Lab 1 (on Render) and Lab 2 (behind Nginx). curl lets you test it in isolation. Real developers use curl constantly to confirm an API behaves correctly before any frontend is finished.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 6: See where the backend stored your check-in</h4>
-<p>The successful check-in from Part 5 was saved by the backend to a file. Look at it:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cat data/attendance.json</pre>
-<p>You will see your check-in for student <code>99500001</code> recorded under
-  the current week, with a timestamp. This is the backend's job: turning a request
-  into stored data. The frontend never does this &mdash; it only shows pages.</p>
-<h4>Completion checklist (CSE5006)</h4>
-<ul>
-  <li>The app runs locally and you opened it at <code>http://localhost:3000</code>.</li>
-  <li>You can explain what <code>npm install</code> and <code>npm start</code> do.</li>
-  <li>You can point to where the frontend and the backend live in <code>server.js</code>.</li>
-  <li>You changed the heading font size and text, restarted, and saw your change.</li>
-  <li>You tested <code>/checkin</code> with curl and saw success, duplicate, not-found and invalid responses.</li>
-  <li>You found your recorded check-in inside <code>data/attendance.json</code>.</li>
-</ul>
-<p>For submission, paste the curl commands you ran with their status codes, and a one-paragraph explanation of the difference between the frontend and the backend in this app.</p>
+<p>For submission, provide the curl outputs for the attendance tests and a short explanation of how the backend validates a student and stores a successful check-in.</p>
 <p style="text-align: center; font-size: 0.78rem; color: #8a8f98; margin-top: 2.5rem;">Designed by Dr Shuo Ding &copy; 2026</p>
