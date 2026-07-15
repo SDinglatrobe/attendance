@@ -4,282 +4,485 @@
   Licensed under the GNU Affero General Public License v3.0 or later
   (AGPL-3.0-or-later). Any copy, modification, or distribution must retain
   this copyright notice and remain under the AGPL.
+-->  
+<!--
+  CSE3CWA / CSE5006 — Week 2 Workshop Lab
+  Copyright (c) 2026 Dr Shuo Ding <shuoding@outlook.com>
+  Licensed under the GNU Affero General Public License v3.0 or later
+  (AGPL-3.0-or-later). Any copy, modification, or distribution must retain
+  this copyright notice and remain under the AGPL.
 -->
 <h4 class="resources-signpost" style="margin-bottom: 1rem;"><img
     class="img-fluid" style="vertical-align: middle; margin-right: 0.5rem;"
     src="/theme/latrobe/assets/2023/SVG/resources.svg" alt="" width="50"
     height="50">Lab 1: Publish Two Websites on Render (Static + Node.js)</h4>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-users" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Who does this lab?</strong></p>
-      <p>This lab is for <strong>both CSE3CWA and CSE5006</strong> students. Everyone completes Lab 1 and Lab 2. Lab 3 is an extra CSE5006-only exercise.</p>
-    </div>
-  </div>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Who does this lab?</strong></p>
+  <p>This lab is for <strong>both CSE3CWA and CSE5006</strong> students.
+    Everyone completes Lab 1 and Lab 2. Lab 3 is an extra CSE5006-only exercise.
+  </p>
 </div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-desktop" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Before you start: your environment</strong></p>
-      <p>All labs assume an <strong>Ubuntu</strong> machine running in <strong>VMware</strong>. Open a terminal inside that Ubuntu virtual machine and run every command there.</p><p>This lab is done mostly in a web browser (GitHub and Render). The few terminal commands are run inside your Ubuntu virtual machine.</p>
-    </div>
-  </div>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Before you start: your environment</strong></p>
+  <p>Run all terminal commands in an <strong>Ubuntu virtual machine</strong>.
+    Keep a browser open for GitHub and Render.</p>
+  <p>This lab uses the recommended 2026 command-line workflow: <strong>GitHub
+      CLI (<code>gh</code>) for GitHub authentication and repository
+      creation</strong>, and <strong>Git (<code>git</code>) for version control,
+      commits, pushes, and updates</strong>.</p>
 </div>
-<p>In this lab you take code from your Ubuntu machine, put it on
-  <strong>GitHub</strong>, and publish it to the internet on <strong>Render</strong>
-  &mdash; twice. First a <strong>static</strong> website (just HTML/CSS), then a
-  <strong>Node.js</strong> web application (the attendance app). By the end you
-  will have two public web addresses anyone can open. You will not configure a
-  Linux server in this lab; Render does that for you.</p>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-lightbulb-o" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>What you will achieve</strong></p>
-      <p>A GitHub account with two repositories.</p><p>A live <strong>static site</strong> served as a Render Static Site.</p><p>A live <strong>Node.js attendance app</strong> with its own public URL.</p><p>A clear understanding of the difference between a <em>Static Site</em> and a <em>Web Service</em> on Render.</p>
-    </div>
-  </div>
+<p>In this lab you will publish two projects:</p>
+<p><strong>Ubuntu project folder → local Git repository → private GitHub
+    repository → Render deployment.</strong></p>
+<p>You will first build a one-file static website. You will then download the
+  Node.js attendance application, place a clean copy in your own private GitHub
+  repository, and deploy it as a Render Web Service.</p>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>What you will achieve</strong></p>
+  <p>Create a valid HTML page directly from the Ubuntu terminal.</p>
+  <p>Understand the different jobs performed by Git, GitHub, and GitHub CLI.</p>
+  <p>Authenticate securely through a browser without manually creating a
+    Personal Access Token.</p>
+  <p>Create private GitHub repositories from the terminal.</p>
+  <p>Deploy a Render Static Site and a Render Web Service.</p>
 </div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-download" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Where to get the attendance project</strong></p>
-      <p>Download or clone it from <a href="https://github.com/SDinglatrobe/attendance" target="_blank" rel="noopener">the attendance repository on GitHub</a>. You can either run <code>git clone</code> on its address, or use the green <strong>Code &rarr; Download ZIP</strong> button and unzip it.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 1: Create your free accounts</h4>
-<ol class="steps">
-  <li>Create a free GitHub account at <a href="https://github.com" target="_blank" rel="noopener">https://github.com</a> if you do not have one.</li>
-  <li>Create a free Render account at <a href="https://render.com" target="_blank" rel="noopener">https://render.com</a>. On the sign-up page choose <strong>Sign in with GitHub</strong> so Render can read your repositories.</li>
-</ol>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Why GitHub first?</strong></p>
-      <p>Render does not take files from your computer directly. It reads your code from a <strong>GitHub repository</strong>. The flow is always: your Ubuntu machine &rarr; GitHub &rarr; Render. GitHub is the single source of truth.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 2: Install Git and identify yourself</h4>
-<p>In your Ubuntu terminal, check Git is present and set your identity (used to label your saved versions):</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">git --version
-
-<span class="cm" style="color: #7fb069;"># If Git is missing:</span>
-sudo apt update
-sudo apt install git -y
-
-<span class="cm" style="color: #7fb069;"># Tell Git who you are</span>
-git config --global user.name "Your Name"
-git config --global user.email "you@example.com"</pre>
-<h4>Part 3: Create the static website and push it to GitHub</h4>
-<p>Start with the simplest possible website. You have two choices for the
-  files:</p>
+<h4>Part 1: Understand Git, GitHub, and GitHub CLI</h4>
+<p>These three names are related, but they are not the same tool:</p>
 <ul>
-  <li><strong>Write your own:</strong> a single <code>index.html</code> (the
-    starter file provided with this lab, &ldquo;This is your first website&rdquo;, is fine),
-    optionally with a <code>styles.css</code>.</li>
-  <li><strong>Use the class example:</strong> the <code>index.html</code> and
-    <code>styles.css</code> from <a href="https://github.com/CSE3CWA-5006/CSE3CWA-5006-Week-01" target="_blank" rel="noopener">the Week&nbsp;1 static-site repository</a>.</li>
+  <li><strong>Git</strong> tracks versions of files on your computer. Important
+    commands include <code>git status</code>, <code>git add</code>, <code>git
+      commit</code>, <code>git push</code>, and <code>git pull</code>.</li>
+  <li><strong>GitHub</strong> is an online service that stores remote Git
+    repositories and supports collaboration.</li>
+  <li><strong>GitHub CLI (<code>gh</code>)</strong> lets you sign in to GitHub
+    and manage GitHub features from the terminal. In this lab, it creates
+    repositories and securely supplies Git with GitHub credentials.</li>
 </ul>
-<p>Put your chosen files in a fresh folder:</p>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Recommended division of work</strong></p>
+  <p>Use <code>gh</code> for <strong>GitHub login and repository
+      creation</strong>. Use <code>git</code> for <strong>tracking, committing,
+      pushing, pulling, and updating code</strong>. GitHub CLI improves the
+    GitHub workflow; it does not replace Git.</p>
+</div>
+<h4>Part 2: Create and secure your GitHub account</h4>
+<ol class="steps">
+  <li>Open <a href="https://github.com" target="_blank"
+      rel="noopener">https://github.com</a> and choose <strong>Sign up</strong>.
+  </li>
+  <li>Enter your email address, create a password, and choose a GitHub username.
+  </li>
+  <li>Complete GitHub's email verification.</li>
+  <li>Sign in to GitHub in the browser.</li>
+  <li>Open your profile picture → <strong>Settings</strong> → <strong>Password
+      and authentication</strong>.</li>
+  <li>Enable two-factor authentication and save the recovery codes securely.
+  </li>
+</ol>
+<p>Two-factor authentication may be completed in the browser using an
+  authenticator app, passkey, security key, or another option offered by GitHub.
+</p>
+<h4>Part 3: Install Git and GitHub CLI on Ubuntu</h4>
+<p>Run the following commands:</p>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Make a project folder and move into it</span>
-mkdir ~/first-website
-cd ~/first-website
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Update Ubuntu's package list</span>
+sudo apt update
 
-<span class="cm" style="color: #7fb069;"># Put your index.html (and styles.css, if any) into this folder, then confirm</span>
-ls
-<span class="cm" style="color: #7fb069;"># You should see: index.html  (and styles.css if you used one)</span></pre>
-<p>Create a new <strong>empty</strong> repository on GitHub (no README, no
-  .gitignore) named <code>first-website</code>. Then connect your folder and
-  push:</p>
+<span class="cm" style="color: #7fb069;"># Install Git and GitHub CLI</span>
+sudo apt install git gh -y
+
+<span class="cm" style="color: #7fb069;"># Confirm both tools are installed</span>
+git --version
+gh --version</pre>
+<h4>Part 4: Configure your Git identity</h4>
+<p>Git records an author name and email address in every commit. Replace the
+  examples below with your own details:</p>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Turn the folder into a Git repository</span>
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">git config --global user.name "Your Name"
+git config --global user.email "your-github-email@example.com"
+
+<span class="cm" style="color: #7fb069;"># Check the saved values</span>
+git config --global user.name
+git config --global user.email</pre>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>This is identity, not authentication</strong></p>
+  <p><code>git config</code> identifies the author of each commit. It does not
+    sign you in to GitHub. Authentication is completed in the next part using
+    <code>gh auth login</code>.</p>
+</div>
+<h4>Part 5: Sign in to GitHub from Ubuntu</h4>
+<p>Run:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">gh auth login</pre>
+<p>Choose the following answers when prompted:</p>
+<ol class="steps">
+  <li>Choose <strong>GitHub.com</strong>.</li>
+  <li>Choose <strong>HTTPS</strong> as the preferred Git protocol.</li>
+  <li>When asked whether to authenticate Git with your GitHub credentials,
+    choose <strong>Yes</strong>.</li>
+  <li>Choose <strong>Login with a web browser</strong>.</li>
+  <li>Copy the <strong>one-time code</strong> displayed in the terminal.</li>
+  <li>Press <strong>Enter</strong> to open the GitHub device activation page, or
+    open the displayed address manually.</li>
+  <li>Sign in to GitHub in the browser.</li>
+  <li>Enter the one-time code and authorise GitHub CLI.</li>
+  <li>Complete two-factor authentication if GitHub requests it.</li>
+  <li>Return to the terminal after GitHub confirms the authorisation.</li>
+</ol>
+<p>Now verify the result:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">gh auth status
+
+<span class="cm" style="color: #7fb069;"># Explicitly ensure Git uses GitHub CLI credentials</span>
+gh auth setup-git</pre>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>What has just happened?</strong></p>
+  <p>GitHub CLI completed browser-based authentication and configured itself as
+    a Git credential helper. Normal HTTPS commands such as <code>git
+      push</code>, <code>git pull</code>, and private <code>git clone</code>
+    operations can now use the stored GitHub credentials.</p>
+</div>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Do not manually create a token for this lab</strong></p>
+  <p>The browser-based <code>gh auth login</code> workflow handles
+    authentication, including two-factor authentication. Never place
+    authentication tokens in project files, Git commits, screenshots, or LMS
+    submissions.</p>
+</div>
+<h4>Part 6: Create your first static HTML website</h4>
+<p>Copy and paste this complete block. It creates a project folder and a valid
+  one-file website:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Create and enter the project folder</span>
+mkdir -p ~/first-static-html
+cd ~/first-static-html
+
+<span class="cm" style="color: #7fb069;"># Create index.html</span>
+cat &gt; index.html &lt;&lt;'HTML'
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;My First Static Website&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;My First Static Website&lt;/h1&gt;
+  &lt;p&gt;This page was created in Ubuntu and published with Git, GitHub, and Render.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+HTML
+
+<span class="cm" style="color: #7fb069;"># Confirm the file exists and open it</span>
+ls
+cat index.html
+xdg-open index.html</pre>
+<p>The Ubuntu browser should display <strong>My First Static Website</strong>.
+</p>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Current state</strong></p>
+  <p>This is still only an ordinary folder on your Ubuntu machine. Git is not
+    yet tracking it, GitHub does not yet contain it, and it is not yet published
+    on the internet.</p>
+</div>
+<h4>Part 7: Create the local Git repository and first commit</h4>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/first-static-html
+
+<span class="cm" style="color: #7fb069;"># Create the hidden local Git repository</span>
 git init
 git branch -M main
 
-<span class="cm" style="color: #7fb069;"># Connect it to the empty GitHub repo you just created</span>
-git remote add origin https://github.com/YOUR-GITHUB-USERNAME/first-website.git
+<span class="cm" style="color: #7fb069;"># Inspect, stage, and commit the file</span>
+git status
+git add index.html
+git commit -m "Create first static website"
+git status</pre>
+<p>The file is now stored in a local Git commit. It has not yet been uploaded to
+  GitHub.</p>
+<h4>Part 8: Create a private GitHub repository and push</h4>
+<p>Remain inside <code>~/first-static-html</code> and run:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/first-static-html
 
-<span class="cm" style="color: #7fb069;"># Stage, save a snapshot, and upload</span>
-git add -A
-git commit -m "My first website"
-git push -u origin main</pre>
-<p>Refresh the repository page on GitHub. Your files should now be there.</p>
-<div class="alert alert-success"
-  style="background-color: #fef3c7; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-exclamation-triangle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>If push asks for a password</strong></p>
-      <p>GitHub does not accept your account password on the command line. When prompted, use a <strong>Personal Access Token</strong> instead (GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens), and paste the token in place of the password.</p>
-    </div>
-  </div>
+gh repo create first-static-html --private --source=. --remote=origin --push</pre>
+<p>This single GitHub CLI command:</p>
+<ul>
+  <li>creates <code>first-static-html</code> in your GitHub account;</li>
+  <li>sets the GitHub repository to <strong>Private</strong>;</li>
+  <li>adds the remote connection named <code>origin</code>;</li>
+  <li>pushes the current <code>main</code> branch and its commit.</li>
+</ul>
+<p>Check the result:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">git remote -v
+git status
+gh repo view --web</pre>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Checkpoint</strong></p>
+  <p>The browser should show a private repository containing
+    <code>index.html</code> and the commit message <strong>Create first static
+      website</strong>.</p>
 </div>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Checkpoint</strong></p>
-      <p>You should now see your <code>index.html</code> (and <code>styles.css</code>) listed in your GitHub repository in the browser. If they are not there, the push did not succeed &mdash; re-run <code>git status</code> and <code>git push origin main</code>.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 4: Publish the static site on Render (Static Site)</h4>
-<p>Because this site is only files (no program runs), the correct Render
-  service is a <strong>Static Site</strong>.</p>
+<h4>Part 9: Create a Render account and connect GitHub</h4>
 <ol class="steps">
-  <li>In the Render dashboard choose <code>New</code>, then <code>Static Site</code>.</li>
-  <li>Select your <code>first-website</code> repository.</li>
-  <li>Choose the branch <code>main</code>.</li>
-  <li>Leave <strong>Build Command</strong> empty &mdash; a plain HTML page needs no build step.</li>
-  <li>Set <strong>Publish Directory</strong> to a single dot <code>.</code> because the files are at the top of the repo.</li>
-  <li>Choose <code>Create Static Site</code> and wait until it reports the site is live.</li>
+  <li>Open <a href="https://render.com" target="_blank"
+      rel="noopener">https://render.com</a>.</li>
+  <li>Choose <strong>Get Started</strong> or <strong>Sign Up</strong>.</li>
+  <li>Sign in with GitHub, or add GitHub under Render's <strong>Git Deployment
+      Credentials</strong>.</li>
+  <li>Authorise Render's GitHub application.</li>
+  <li>Choose access to all repositories or selected repositories.</li>
+  <li>If you choose selected repositories, include
+    <code>first-static-html</code>.</li>
+  <li>Return to the Render dashboard.</li>
+</ol>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>A private repository must be authorised</strong></p>
+  <p>If a private repository does not appear in Render, update the repository
+    access granted to the Render GitHub application. Creating the repository on
+    GitHub does not automatically grant Render access.</p>
+</div>
+<h4>Part 10: Deploy the static website on Render</h4>
+<p>A plain HTML website does not run a server program. The correct Render
+  service type is a <strong>Static Site</strong>.</p>
+<ol class="steps">
+  <li>In the Render dashboard, choose <strong>New</strong> → <strong>Static
+      Site</strong>.</li>
+  <li>Find <code>first-static-html</code> and choose <strong>Connect</strong>.
+  </li>
+  <li>Enter a unique service <strong>Name</strong>, such as
+    <code>yourname-first-static-html</code>.</li>
+  <li>Set <strong>Branch</strong> to <code>main</code>.</li>
+  <li>Leave <strong>Root Directory</strong> empty because
+    <code>index.html</code> is at the repository root.</li>
+  <li>Leave <strong>Build Command</strong> empty because plain HTML requires no
+    build process.</li>
+  <li>Set <strong>Publish Directory</strong> to <code>.</code>.</li>
+  <li>Choose <strong>Create Static Site</strong> or the equivalent deploy button
+    shown by Render.</li>
+  <li>Wait for the deploy to complete.</li>
   <li>Open the generated <code>onrender.com</code> address.</li>
 </ol>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-lightbulb-o" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Checkpoint: you are live</strong></p>
-      <p>Your page opens at a public <code>onrender.com</code> address. Send it to a classmate on another device &mdash; they can open it from anywhere. It is no longer only on your machine.</p>
-    </div>
-  </div>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Private source code, public website</strong></p>
+  <p>The GitHub repository remains private. The Render URL is public because
+    Render publishes the website produced from the repository.</p>
 </div>
-<h4>Part 5: Get the Node.js attendance project</h4>
-<p>Now the second, more powerful kind of site: a <strong>Node.js</strong> application that runs code for each visitor. Get the project from <a href="https://github.com/SDinglatrobe/attendance" target="_blank" rel="noopener">the attendance repository on GitHub</a>:</p>
+<h4>Part 11: Download and test the attendance application</h4>
+<p>Use GitHub CLI to clone the public teaching repository:</p>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Option A: clone with Git (recommended)</span>
-git clone https://github.com/SDinglatrobe/attendance.git
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~
+gh repo clone SDinglatrobe/attendance
 cd attendance
 ls
 
-<span class="cm" style="color: #7fb069;"># Option B: download the ZIP from the repo's green "Code" button,</span>
-<span class="cm" style="color: #7fb069;"># unzip it, then move into the unzipped folder:</span>
-cd attendance</pre>
-<p>Look at <code>package.json</code> to see how the app starts &mdash; this is exactly what Render will run:</p>
+<span class="cm" style="color: #7fb069;"># Install dependencies and start the local application</span>
+npm install
+npm start</pre>
+<p>Open the local URL displayed in the terminal, normally
+  <code>http://localhost:3000</code>. Confirm that the attendance page opens,
+  then return to the terminal and press <strong>Ctrl+C</strong>.</p>
+<h4>Part 12: Create your own clean attendance repository</h4>
+<p>The cloned folder contains the teacher's Git history and remote connection.
+  For this exercise, create a clean repository owned by you:</p>
 <pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cat package.json
-<span class="cm" style="color: #7fb069;"># Note the important lines:</span>
-<span class="cm" style="color: #7fb069;">#   "scripts": { "start": "node server.js" }</span>
-<span class="cm" style="color: #7fb069;">#   "engines": { "node": "&gt;=18" }</span></pre>
-<p>To deploy it from <strong>your own</strong> GitHub account, either click
-  <strong>Fork</strong> on the repository page, or push a copy to a new repo of
-  your own:</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># First create an empty repo named "attendance" on your GitHub account, then:</span>
-git remote remove origin
-git remote add origin https://github.com/YOUR-GITHUB-USERNAME/attendance.git
-git push -u origin main</pre>
-<h4>Part 6: Publish the Node.js app on Render (Web Service)</h4>
-<p>Because this app <em>runs a program</em>, it needs a Render <strong>Web Service</strong>, not a Static Site.</p>
-<ol class="steps">
-  <li>In the Render dashboard choose <code>New</code>, then <code>Web Service</code>.</li>
-  <li>Select your <code>attendance</code> repository and branch <code>main</code>.</li>
-  <li>Render detects the language as <strong>Node</strong>.</li>
-  <li>Set <strong>Build Command</strong> to <code>npm install</code>.</li>
-  <li>Set <strong>Start Command</strong> to <code>npm start</code> (this runs <code>node server.js</code>).</li>
-  <li>Choose the <strong>Free</strong> instance type.</li>
-  <li>Choose <code>Create Web Service</code> and watch the deploy logs until it is live.</li>
-  <li>Open the generated address. You should see the attendance check-in page.</li>
-</ol>
-<div class="alert alert-success"
-  style="background-color: #d9ebd0; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-info-circle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Where did the port come from?</strong></p>
-      <p>You never typed a port. The code reads <code>process.env.PORT</code>, a value Render sets, and listens there. On your own machine the same code falls back to port <code>3000</code>. This is why identical code runs in both places unchanged.</p>
-    </div>
-  </div>
-</div>
-<p>Try these pages on your live app:</p>
-<ul>
-  <li><code>/</code> &mdash; the student check-in page.</li>
-  <li><code>/qr</code> &mdash; the weekly QR code.</li>
-  <li><code>/admin</code> &mdash; the admin login (password defaults to <code>171717</code> unless you set one).</li>
-</ul>
-<h5>Set your own admin password (environment variable)</h5>
-<p>The app reads its admin password from an environment variable so it is not written in the code. Set your own on Render:</p>
-<ol class="steps">
-  <li>Open your Web Service, then choose <code>Environment</code>.</li>
-  <li>Add a variable: key <code>ADMIN_PASSWORD</code>, value of your choice.</li>
-  <li>Save. Render redeploys, and your password is now active at <code>/admin</code>.</li>
-</ol>
-<h4>Part 7: Notice the &ldquo;stateless&rdquo; behaviour</h4>
-<p>Open <code>/admin</code>, then submit one or two test check-ins on the
-  check-in page. They appear in the admin records. Now press <strong>Manual
-  Deploy</strong> in the Render dashboard (or wait for an idle restart) and look
-  at the admin records again.</p>
-<div class="alert alert-success"
-  style="background-color: #fef3c7; color: #242424; margin: 1.2rem auto; max-width: 800px;"
-  role="alert">
-  <div class="row">
-    <div class="col-1">
-      <p class="fa fa-exclamation-triangle" style="font-size: 1.5rem;" aria-hidden="true"> </p>
-    </div>
-    <div class="col-11">
-      <p><strong>Why the records can disappear</strong></p>
-      <p>The app saves check-ins to a file, <code>data/attendance.json</code>, while it runs. On Render's free, <strong>stateless</strong> hosting that file is reset to the empty version from GitHub after a redeploy, restart, or idle spin-down &mdash; so the check-ins you just made can vanish.</p><p>This is expected. Treat the Render demo as a <strong>teaching demo, not an official record</strong>. After class, open <code>/admin</code> and use <strong>Download attendance.json</strong> to keep a backup. A real system would store data in a database or on a persistent disk.</p>
-    </div>
-  </div>
-</div>
-<h4>Part 8: Update a live site</h4>
-<p>Updating either site is just the normal Git loop. Render watches your repo and redeploys automatically when you push.</p>
-<pre class="code-window"
-  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># Make a small edit, then:</span>
-git add -A
-git commit -m "Update site"
-git push origin main
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/attendance
 
-<span class="cm" style="color: #7fb069;"># Render detects the new commit and redeploys automatically.</span></pre>
+<span class="cm" style="color: #7fb069;"># Remove the downloaded Git history only</span>
+rm -rf .git
+
+<span class="cm" style="color: #7fb069;"># Start your own Git history</span>
+git init
+git branch -M main
+git add -A
+git commit -m "Add attendance web application"
+
+<span class="cm" style="color: #7fb069;"># Create your private GitHub repository and push</span>
+gh repo create attendance --private --source=. --remote=origin --push</pre>
+<p>Check the new repository:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">git remote -v
+git status
+gh repo view --web</pre>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Why remove <code>.git</code>?</strong></p>
+  <p>The application files remain, but the original repository history and
+    remote link are removed. You then create a new local history and a new
+    private GitHub repository under your own account.</p>
+</div>
+<h4>Part 13: Give Render access to the attendance repository</h4>
+<ol class="steps">
+  <li>Return to Render and begin creating a new service.</li>
+  <li>If <code>attendance</code> is listed, continue to Part 14.</li>
+  <li>If it is not listed, open the option to configure or manage the connected
+    GitHub account.</li>
+  <li>In GitHub, add <code>attendance</code> to the repositories accessible by
+    the Render GitHub application.</li>
+  <li>Save the GitHub settings and return to Render.</li>
+  <li>Refresh the repository list if necessary.</li>
+</ol>
+<h4>Part 14: Deploy attendance as a Render Web Service</h4>
+<p>The attendance application runs a Node.js server, so it must be deployed as a
+  <strong>Web Service</strong>, not a Static Site.</p>
+<ol class="steps">
+  <li>In Render, choose <strong>New</strong> → <strong>Web Service</strong>.
+  </li>
+  <li>Find your private <code>attendance</code> repository and choose
+    <strong>Connect</strong>.</li>
+  <li>Enter a unique service <strong>Name</strong>, such as
+    <code>yourname-attendance</code>.</li>
+  <li>Set <strong>Branch</strong> to <code>main</code>.</li>
+  <li>Leave <strong>Root Directory</strong> empty.</li>
+  <li>Select <strong>Node</strong> as the Language or Runtime.</li>
+  <li>Set <strong>Build Command</strong> to <code>npm install</code>.</li>
+  <li>Set <strong>Start Command</strong> to <code>npm start</code>.</li>
+  <li>Select the available <strong>Free</strong> instance type for this teaching
+    exercise.</li>
+  <li>Add an environment variable with key <code>ADMIN_PASSWORD</code> and a
+    value known only to you. If the field is not shown during creation, add it
+    later from the service's <strong>Environment</strong> page.</li>
+  <li>Choose <strong>Create Web Service</strong> or <strong>Deploy Web
+      Service</strong>.</li>
+  <li>Watch the deployment logs until Render reports that the service is live.
+  </li>
+  <li>Open the generated <code>onrender.com</code> address.</li>
+</ol>
+<div
+  style="border-left: 3px solid #5a9e6f; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Why no port is entered</strong></p>
+  <p>The server reads <code>process.env.PORT</code>. Render supplies this value
+    to the running Web Service. The same application can use a fallback port
+    such as <code>3000</code> when running locally.</p>
+</div>
+<p>Test these paths:</p>
+<ul>
+  <li><code>/</code> — student check-in page (testing ID: 12345678).</li>
+  <li><code>/qr</code> — weekly QR code.</li>
+  <li><code>/admin</code> — administration page using your
+    <code>ADMIN_PASSWORD</code>.</li>
+</ul>
+<h4>Part 15: Test and download attendance records</h4>
+<ol class="steps">
+  <li>Submit one or two test check-ins through the public attendance page.</li>
+  <li>Open <code>/admin</code> and sign in using your environment-variable
+    password.</li>
+  <li>Confirm that the test records appear.</li>
+  <li>Use the administration page's download function to save the attendance
+    data.</li>
+  <li>Keep the downloaded file as a backup.</li>
+</ol>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>Runtime files are not permanent database storage</strong></p>
+  <p>A redeploy, restart, or instance replacement can remove changes written
+    only to the Web Service's local filesystem. This application is a deployment
+    demonstration, not the university's official attendance system. Production
+    systems should store important records in a persistent database or storage
+    service.</p>
+</div>
+<h4>Part 16: Update a live website</h4>
+<p>After the first upload, the normal workflow is mostly Git. Edit a file,
+  inspect the changes, commit them, and push:</p>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;">cd ~/first-static-html
+
+<span class="cm" style="color: #7fb069;"># After editing index.html</span>
+git status
+git diff
+git add index.html
+git commit -m "Update static website"
+git push</pre>
+<p>Render watches the linked <code>main</code> branch and normally starts a new
+  deployment after the push.</p>
+<h4>Part 17: Essential commands to remember</h4>
+<pre class="code-window"
+  style="background: #0b1220; color: #d7e3f4; font-family: Consolas,'Courier New',monospace; font-size: 0.88rem; line-height: 1.6; padding: 1rem 1.2rem; border-radius: 10px; overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid #24324a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); white-space: pre; display: block;"><span class="cm" style="color: #7fb069;"># GitHub authentication and repository tools</span>
+gh auth login
+gh auth status
+gh auth setup-git
+gh repo create
+gh repo clone
+gh repo view --web
+
+<span class="cm" style="color: #7fb069;"># Daily Git version-control workflow</span>
+git status
+git diff
+git add -A
+git commit -m "Describe the change"
+git push
+git pull</pre>
+<h4>Troubleshooting</h4>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong><code>git push</code> asks for a username or password</strong></p>
+  <p>Run <code>gh auth status</code>, then run <code>gh auth setup-git</code>.
+    Confirm that the repository remote uses an HTTPS GitHub address by running
+    <code>git remote -v</code>.</p>
+</div>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong><code>gh repo create</code> says the repository already
+      exists</strong></p>
+  <p>Choose a different repository name, or open the existing repository with
+    <code>gh repo view first-static-html --web</code>. Do not repeatedly create
+    additional repositories with almost identical names.</p>
+</div>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>The private repository is missing from Render</strong></p>
+  <p>Update Render's GitHub application permissions and grant it access to that
+    repository. Then refresh the repository list in Render.</p>
+</div>
+<div
+  style="border-left: 3px solid #d4a72c; background: #fafafa; padding: 0.6rem 0.9rem 0.6rem 1rem; margin: 1rem 0; border-radius: 0 6px 6px 0;">
+  <p><strong>The Render Web Service build fails</strong></p>
+  <p>Check the deployment log. Confirm that <code>package.json</code> is at the
+    repository root, the Build Command is <code>npm install</code>, and the
+    Start Command is <code>npm start</code>.</p>
+</div>
 <h4>Completion checklist</h4>
 <ul>
-  <li>Your static site is live on an <code>onrender.com</code> address.</li>
-  <li>Your Node.js attendance app is live on its own <code>onrender.com</code> address.</li>
-  <li>You can explain why the static site is a <em>Static Site</em> and the attendance app is a <em>Web Service</em>.</li>
-  <li>You set your own <code>ADMIN_PASSWORD</code> and reached <code>/admin</code>.</li>
-  <li>You observed that runtime data can reset on the free stateless tier, and you downloaded a backup.</li>
+  <li>You created and secured a GitHub account.</li>
+  <li>You installed both <code>git</code> and <code>gh</code>.</li>
+  <li>You configured your Git author name and email.</li>
+  <li>You authenticated with <code>gh auth login</code> using HTTPS and browser
+    login.</li>
+  <li>You confirmed Git authentication with <code>gh auth setup-git</code>.</li>
+  <li>You created <code>index.html</code> directly from the Ubuntu terminal.
+  </li>
+  <li>You created a local Git repository and committed the HTML file.</li>
+  <li>You used <code>gh repo create</code> to create and push to a private
+    repository.</li>
+  <li>Your static website is live as a Render Static Site.</li>
+  <li>You cloned and tested the attendance application.</li>
+  <li>You created a clean private attendance repository under your own account.
+  </li>
+  <li>Your attendance application is live as a Render Web Service.</li>
+  <li>You set <code>ADMIN_PASSWORD</code> and downloaded test attendance
+    records.</li>
+  <li>You can explain why <code>gh</code> helps with GitHub, while
+    <code>git</code> still performs version control.</li>
 </ul>
-<p>Record your two public URLs and your two GitHub repository URLs for submission.</p>
-<p style="text-align: center; font-size: 0.78rem; color: #8a8f98; margin-top: 2.5rem;">Designed by Dr Shuo Ding &copy; 2026</p>
+<p>Record these four URLs:</p>
+<ul>
+  <li>Your private <code>first-static-html</code> GitHub repository.</li>
+  <li>Your public Render Static Site.</li>
+  <li>Your private <code>attendance</code> GitHub repository.</li>
+  <li>Your public Render attendance Web Service.</li>
+</ul>
+<p
+  style="text-align: center; font-size: 0.78rem; color: #8a8f98; margin-top: 2.5rem;">
+  Designed by Dr Shuo Ding © 2026</p>
